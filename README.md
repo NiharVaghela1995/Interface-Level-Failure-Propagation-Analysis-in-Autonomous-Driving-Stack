@@ -18,11 +18,17 @@ propagate into planning behavior?
 ## Framework: Two Recursive Feedback Loops
 
 Sensors (Camera + LiDAR + Radar)
+
 ↓
+
 Adaptive Fusion ↔ Perception (Loop 1: sensor trust adaptation)
+
 ↓
+
 Perception ↔ Planning (Loop 2: uncertainty-aware behavior)
+
 ↓
+
 Safety-constrained behavior (RSS / CBF)
 
 **Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout), 
