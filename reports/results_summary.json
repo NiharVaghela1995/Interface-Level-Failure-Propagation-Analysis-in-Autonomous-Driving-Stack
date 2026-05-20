@@ -1,0 +1,35 @@
+{
+  "scene": "Parked truck, construction, intersection, turn left, following a van",
+  "sample_token": "f1e3d9d08f044c439ce86a2d6fcca57b",
+  "loop1_diagnostics": {
+    "attention_shift_clean_vs_glare": 0.011106673628091812,
+    "uncertainty_clean": 0.00024550408124923706,
+    "uncertainty_glare": 0.00023485766723752022,
+    "uncertainty_increase_pct": -4.336552760159029,
+    "confidence_clean": 0.9454776048660278,
+    "confidence_glare": 0.9467085599899292
+  },
+  "loop2_planning": {
+    "clean": {
+      "uncertainty_raw": 0.00024550408124923706,
+      "uncertainty_normalized": 0.029694710459027975,
+      "velocity_kmh": 48.66373802934374,
+      "ttc_margin_s": 2.089084131377084,
+      "lateral_margin_m": 1.5593894209180559,
+      "maneuver_aggressiveness": 0.9703052895409721,
+      "mode": "NORMAL"
+    },
+    "glare": {
+      "uncertainty_raw": 0.00023485766723752022,
+      "uncertainty_normalized": 0.027521972905616372,
+      "velocity_kmh": 48.76151121924726,
+      "ttc_margin_s": 2.082565918716849,
+      "lateral_margin_m": 1.5550439458112328,
+      "maneuver_aggressiveness": 0.9724780270943836,
+      "mode": "NORMAL"
+    },
+    "speed_reduction_kmh": -0.09777318990352057,
+    "ttc_increase_s": -0.006518212660235001,
+    "lateral_increase_m": -0.004345475106823038
+  }
+}
