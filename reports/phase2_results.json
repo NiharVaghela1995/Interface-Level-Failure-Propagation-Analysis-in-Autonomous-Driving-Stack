@@ -1,0 +1,35 @@
+{
+  "phase": 2,
+  "scene": "Parked truck, construction, intersection, turn left, following a van",
+  "lidar_clean": 34688,
+  "lidar_rain": 22548,
+  "dropout_pct": 34.99769372693727,
+  "uncertainty": {
+    "CAM_FRONT": {
+      "conf": 0.9389408826828003,
+      "unc": 0.0003776433877646923
+    },
+    "CAM_FRONT_GLARE": {
+      "conf": 0.9389573335647583,
+      "unc": 0.0003918778384104371
+    },
+    "CAM_BACK": {
+      "conf": 0.933087944984436,
+      "unc": 0.0006274789338931441
+    },
+    "CAM_FRONT_LEFT": {
+      "conf": 0.8912947177886963,
+      "unc": 0.001666671596467495
+    }
+  },
+  "trust": {
+    "clean": {
+      "cam": 0.5780261109074661,
+      "lidar": 0.42197388284002935
+    },
+    "degraded": {
+      "cam": 0.6478849601686446,
+      "lidar": 0.35211503280154
+    }
+  }
+}
