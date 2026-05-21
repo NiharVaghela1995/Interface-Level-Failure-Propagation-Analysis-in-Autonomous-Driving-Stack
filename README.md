@@ -20,15 +20,12 @@ propagate into planning behavior?
 Sensors (Camera + LiDAR + Radar)
 
 ↓
-
 Adaptive Fusion ↔ Perception (Loop 1: sensor trust adaptation)
 
 ↓
-
 Perception ↔ Planning (Loop 2: uncertainty-aware behavior)
 
 ↓
-
 Safety-constrained behavior (RSS / CBF)
 
 **Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout), 
@@ -37,17 +34,33 @@ fusion adapts sensor weighting dynamically.
 **Loop 2** — When belief confidence is low, planning adapts: 
 reduced speed, wider TTC margins, conservative maneuver profile.
 
-## Results
-
-![Summary](screenshots/07_summary.png)
-
 ## Phases
 
 | Phase | Focus | Status |
 |-------|-------|--------|
 | Phase 1 | GradCAM + MC Dropout + Planning adaptation on nuScenes | ✅ Done |
-| Phase 2 | Real BEVFusion cross-modal attention + Evidential Deep Learning | 🔄 In progress |
-| Phase 3 | Sensitivity matrix + CARLA scenario generation | 📋 Planned |
+| Phase 2 | Real BEVFusion cross-modal attention + Evidential Deep Learning | ✅ Done |
+| Phase 3 | Sensitivity matrix + CARLA scenario generation | 🔄 In progress |
+
+## Phase 1 Results
+
+![Summary](screenshots/07_summary.png)
+
+## Phase 2 Results
+
+### Multi-camera GradCAM + Uncertainty Analysis
+![Phase 2 GradCAM](screenshots/phase2_01_multicam.png)
+
+### Key findings:
+- Camera confidence score remains stable under glare (0.939 → 0.939) 
+  but MC Dropout **uncertainty increases** — confirming that confidence ≠ uncertainty
+- CAM_FRONT_LEFT shows highest natural uncertainty (0.001667) — 
+  oblique viewing angle reduces model confidence
+- Naive uncertainty→trust mapping produces counterintuitive results, 
+  motivating more principled Evidential Deep Learning approach
+
+### Adaptive Sensor Trust
+![Phase 2 Trust](screenshots/phase2_02_trust.png)
 
 ## Tech Stack
 
