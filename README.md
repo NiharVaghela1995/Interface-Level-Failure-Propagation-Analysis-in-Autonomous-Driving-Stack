@@ -20,13 +20,17 @@ propagate into planning behavior?
 Sensors (Camera + LiDAR + Radar)
 
 ↓
+
 Adaptive Fusion ↔ Perception (Loop 1: sensor trust adaptation)
 
 ↓
+
 Perception ↔ Planning (Loop 2: uncertainty-aware behavior)
 
 ↓
+
 Safety-constrained behavior (RSS / CBF)
+
 
 **Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout), 
 fusion adapts sensor weighting dynamically.
