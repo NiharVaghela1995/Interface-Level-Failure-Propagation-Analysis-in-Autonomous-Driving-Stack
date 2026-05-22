@@ -1,0 +1,204 @@
+{
+  "phase": 4,
+  "title": "SOTIF & ISO 26262 Safety Analysis",
+  "standards": [
+    "ISO 21448 (SOTIF)",
+    "ISO 26262 (Functional Safety)"
+  ],
+  "trigger_conditions": {
+    "T1": {
+      "name": "Direct sunlight / glare",
+      "sensor_affected": "Camera",
+      "glare_threshold": 0.3,
+      "dropout_threshold": 0.0,
+      "real_world_example": "Morning/evening driving toward sun, tunnel exit",
+      "iso_clause": "ISO 21448 Cl. 8.3 - Known triggering conditions"
+    },
+    "T2": {
+      "name": "Rain / LiDAR point dropout",
+      "sensor_affected": "LiDAR",
+      "glare_threshold": 0.0,
+      "dropout_threshold": 0.2,
+      "real_world_example": "Moderate to heavy rainfall, wet road spray",
+      "iso_clause": "ISO 21448 Cl. 8.3 - Known triggering conditions"
+    },
+    "T3": {
+      "name": "Combined degradation (glare + rain)",
+      "sensor_affected": "Camera + LiDAR",
+      "glare_threshold": 0.3,
+      "dropout_threshold": 0.2,
+      "real_world_example": "Rainy day driving toward low sun",
+      "iso_clause": "ISO 21448 Cl. 8.4 - Unknown triggering conditions"
+    },
+    "T4": {
+      "name": "Pedestrian crossing under sensor degradation",
+      "sensor_affected": "Camera + LiDAR",
+      "glare_threshold": 0.45,
+      "dropout_threshold": 0.35,
+      "real_world_example": "Crosswalk in direct sunlight with rain",
+      "iso_clause": "ISO 21448 Cl. 8.4 - Unknown triggering conditions"
+    },
+    "T5": {
+      "name": "Extreme combined sensor failure",
+      "sensor_affected": "Camera + LiDAR",
+      "glare_threshold": 0.6,
+      "dropout_threshold": 0.5,
+      "real_world_example": "Snowstorm at night near tunnel exit",
+      "iso_clause": "ISO 21448 Cl. 8.4 - Unknown triggering conditions"
+    }
+  },
+  "hara_table": [
+    {
+      "hazard_id": "H1",
+      "trigger": "T1",
+      "hazard": "False positive pedestrian detection \u2014 unnecessary braking",
+      "severity": "S2",
+      "exposure": "E3",
+      "controllability": "C2",
+      "asil": "ASIL B",
+      "sotif_region": "Known unsafe",
+      "safety_goal": "Perception confidence shall not trigger planning decisions when camera reliability < 0.5",
+      "mitigation": "Loop 1: LiDAR trust weight increases; Loop 2: velocity reduces to cautious profile"
+    },
+    {
+      "hazard_id": "H2",
+      "trigger": "T1",
+      "hazard": "False negative \u2014 pedestrian missed in glare region",
+      "severity": "S3",
+      "exposure": "E3",
+      "controllability": "C3",
+      "asil": "ASIL D",
+      "sotif_region": "Known unsafe",
+      "safety_goal": "System shall enter CONSERVATIVE regime when camera confidence drops below threshold at pedestrian-present affordance",
+      "mitigation": "Loop 1: LiDAR assumes primary role; Loop 2: CONSERVATIVE mode + CBF hard constraint"
+    },
+    {
+      "hazard_id": "H3",
+      "trigger": "T2",
+      "hazard": "Range estimation error \u2014 incorrect distance to leading vehicle",
+      "severity": "S2",
+      "exposure": "E4",
+      "controllability": "C2",
+      "asil": "ASIL C",
+      "sotif_region": "Known unsafe",
+      "safety_goal": "TTC safety margin shall increase proportionally to LiDAR dropout rate",
+      "mitigation": "Loop 1: Camera range estimates weighted up; Loop 2: TTC margin increases from 2.0s to 4.5s"
+    },
+    {
+      "hazard_id": "H4",
+      "trigger": "T3",
+      "hazard": "Both sensors degraded \u2014 scene understanding unreliable",
+      "severity": "S3",
+      "exposure": "E2",
+      "controllability": "C3",
+      "asil": "ASIL C",
+      "sotif_region": "Unknown unsafe",
+      "safety_goal": "System shall enter CONSERVATIVE mode when combined sensor reliability < 0.35",
+      "mitigation": "Regime classifier triggers CONSERVATIVE; K(t)=0.15 \u2014 slow control response; RSS hard constraints active"
+    },
+    {
+      "hazard_id": "H5",
+      "trigger": "T4",
+      "hazard": "Undetected pedestrian at crossing under combined sensor failure",
+      "severity": "S3",
+      "exposure": "E2",
+      "controllability": "C3",
+      "asil": "ASIL D",
+      "sotif_region": "Unknown unsafe \u2192 Known unsafe via framework",
+      "safety_goal": "Pedestrian affordance risk shall override uncertainty thresholding \u2014 same uncertainty triggers stricter regime when pedestrian present",
+      "mitigation": "Affordance-mediated regime: pedestrian_risk \u00d7 uncertainty \u2192 CONSERVATIVE regardless of individual thresholds"
+    },
+    {
+      "hazard_id": "H6",
+      "trigger": "T5",
+      "hazard": "Complete perception unreliability \u2014 no safe scene understanding possible",
+      "severity": "S3",
+      "exposure": "E1",
+      "controllability": "C3",
+      "asil": "ASIL B",
+      "sotif_region": "Unknown unsafe",
+      "safety_goal": "System shall request MRC (Minimal Risk Condition) when both sensors below minimum threshold",
+      "mitigation": "K(t)=0.0 \u2014 freeze controls; MRC request; watchdog FSM triggers safe stop"
+    }
+  ],
+  "sotif_scenario_space": {
+    "total_combinations": 49,
+    "known_safe_before": 20,
+    "known_safe_after": 28,
+    "known_unsafe": 14,
+    "unknown_unsafe_before": 12,
+    "unknown_unsafe_after": 5,
+    "asil_d_critical": 2,
+    "unknown_unsafe_reduction_pct": 58.3
+  },
+  "safety_boundaries": {
+    "glare_known_unsafe_threshold": 0.3,
+    "glare_unknown_unsafe_threshold": 0.45,
+    "dropout_known_unsafe_threshold": 0.2,
+    "dropout_unknown_unsafe_threshold": 0.35,
+    "combined_asil_d_threshold": {
+      "glare": 0.6,
+      "dropout": 0.5
+    }
+  },
+  "framework_safety_coverage": {
+    "H1": {
+      "asil": "ASIL B",
+      "achieved_coverage": 0.95,
+      "required": 0.7,
+      "met": true
+    },
+    "H2": {
+      "asil": "ASIL D",
+      "achieved_coverage": 0.72,
+      "required": 0.99,
+      "met": false,
+      "note": "Requires real BEVFusion Phase 5"
+    },
+    "H3": {
+      "asil": "ASIL C",
+      "achieved_coverage": 0.91,
+      "required": 0.9,
+      "met": true
+    },
+    "H4": {
+      "asil": "ASIL C",
+      "achieved_coverage": 0.78,
+      "required": 0.9,
+      "met": false,
+      "note": "Requires CARLA closed-loop Phase 6"
+    },
+    "H5": {
+      "asil": "ASIL D",
+      "achieved_coverage": 0.69,
+      "required": 0.99,
+      "met": false,
+      "note": "Requires real BEVFusion Phase 5"
+    },
+    "H6": {
+      "asil": "ASIL B",
+      "achieved_coverage": 0.88,
+      "required": 0.7,
+      "met": true
+    }
+  },
+  "safety_goals": [
+    "SG1: Confidence threshold",
+    "SG2: TTC margin scaling",
+    "SG3: CONSERVATIVE regime",
+    "SG4: Affordance override",
+    "SG5: MRC trigger"
+  ],
+  "key_metrics": {
+    "mean_risk_reduction_pct": 29.3,
+    "max_risk_reduction_pct": 79.79085834645058,
+    "fragility_boundary_glare": 0.45,
+    "fragility_boundary_dropout": 0.35,
+    "camera_trust_at_max_glare": 0.41,
+    "conservative_scenario_coverage_pct": 23.0,
+    "K_t_normal": 0.8,
+    "K_t_cautious": 0.4,
+    "K_t_conservative": 0.15,
+    "K_t_emergency": 0.0
+  }
+}
