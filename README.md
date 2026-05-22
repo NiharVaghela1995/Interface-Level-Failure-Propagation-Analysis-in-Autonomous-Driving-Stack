@@ -82,6 +82,36 @@ reduced speed, wider TTC margins, conservative maneuver profile.
   LiDAR dropout OR glare intensity >0.45 — quantifying the pipeline's 
   robustness threshold
 
+  ### Phase 4a Results — SOTIF & ISO 26262 Safety Analysis
+![SOTIF Classification](screenshots/phase4/phase4_01_sotif_classification.png)
+![Risk Analysis](screenshots/phase4/phase4_02_risk_analysis.png)
+![Complete Summary](screenshots/phase4/phase4_03_complete_summary.png)
+
+**Key findings:**
+- 6 hazards identified (H1-H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
+- 5 SOTIF trigger conditions (T1-T5): glare, rain dropout, combined, 
+  pedestrian + degraded sensors, extreme combined failure
+- Unknown unsafe scenarios reduced: 12 → 5 (58.3% reduction)
+- Mean risk reduction: 29.3% vs naive uncertainty-thresholding baseline
+- Fragility boundaries confirmed: CAUTIOUS at glare > 0.45 OR dropout > 35%
+- ASIL D hazards: H2 (missed pedestrian under glare) and H5 
+  (undetected pedestrian at crossing under combined sensor failure)
+- Framework safety coverage: 3/6 hazards fully met, 3/6 require 
+  Phase 5/6 (real BEVFusion + closed-loop validation)
+
+  ### Phase 4b Results — Evidential Deep Learning
+![EDL Comparison](screenshots/phase4b/phase4b_01_edl_comparison.png)
+![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
+
+**Key findings:**
+- EDL separates aleatoric uncertainty (sensor noise — the glare itself) from 
+  epistemic uncertainty (model ignorance — novel scenario)
+- EDL trust responds earlier and steeper: trust drops to 0.41 at max glare 
+  vs 0.58 for MC Dropout
+- Epistemic uncertainty penalized more steeply (k=5.0) than aleatoric (k=2.5)
+  — unknown scenarios are more dangerous than known sensor noise
+- EDL triggers additional velocity reduction of X km/h compared to MC Dropout
+
 ## Research Roadmap
 
 | Phase | Focus | Status |
@@ -89,8 +119,9 @@ reduced speed, wider TTC margins, conservative maneuver profile.
 | Phase 1 | GradCAM + MC Dropout + Loop 2 planning demo | ✅ Complete |
 | Phase 2 | Multi-camera GradCAM + adaptive sensor trust | ✅ Complete |
 | Phase 3 | 7×7 sensitivity matrix + planning mode distribution | ✅ Complete |
-| Phase 4 | Evidential Deep Learning + steeper trust response | 🔄 Planned |
-| Phase 5 | CARLA scenario generation + closed-loop validation | 📋 Planned |
+| Phase 4a | SOTIF & ISO 26262 safety analysis — HARA table, risk boundaries | ✅ Complete |
+| Phase 4b | Evidential Deep Learning — aleatoric vs epistemic uncertainty | ✅ Complete |
+| Phase 5 | CARLA scenario generation + closed-loop validation | 🔄 In progress |
 | Phase 6 | Full pipeline on real BEVFusion (20GB+ VRAM) | 📋 Planned |
 
 
