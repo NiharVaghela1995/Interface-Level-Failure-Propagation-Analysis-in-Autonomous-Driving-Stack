@@ -82,7 +82,7 @@ reduced speed, wider TTC margins, conservative maneuver profile.
   LiDAR dropout OR glare intensity >0.45 — quantifying the pipeline's 
   robustness threshold
 
-  ### Phase 4a Results — SOTIF & ISO 26262 Safety Analysis
+### Phase 4a Results — SOTIF & ISO 26262 Safety Analysis
 ![SOTIF Classification](screenshots/phase4/phase4_01_sotif_classification.png)
 ![Risk Analysis](screenshots/phase4/phase4_02_risk_analysis.png)
 ![Complete Summary](screenshots/phase4/phase4_03_complete_summary.png)
@@ -99,7 +99,7 @@ reduced speed, wider TTC margins, conservative maneuver profile.
 - Framework safety coverage: 3/6 hazards fully met, 3/6 require 
   Phase 5/6 (real BEVFusion + closed-loop validation)
 
-  ### Phase 4b Results — Evidential Deep Learning
+### Phase 4b Results — Evidential Deep Learning
 ![EDL Comparison](screenshots/phase4b/phase4b_01_edl_comparison.png)
 ![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
 
