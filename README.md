@@ -17,8 +17,8 @@ propagate into planning behavior?
 # Autonomous Driving Research Architecture
 
 <p align="center">
-  <a href="https://NiharVaghela1995.github.io/av-perception-planning-research/">
-    <img src="docs/architecture-preview.png" width="100%">
+  <a href="https://NiharVaghela1995.github.io/av-perception-planning-research/preview.html">
+    <img src="preview.png" width="100%">
   </a>
 </p>
 
