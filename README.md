@@ -17,10 +17,13 @@ propagate into planning behavior?
 ## Framework: Two Recursive Feedback Loops
 Sensors (Camera + LiDAR + Radar)
 ↓
+
 Adaptive Fusion ↔ Perception   (Loop 1: sensor trust adaptation)
 ↓
+
 Perception ↔ Planning          (Loop 2: uncertainty-aware behavior)
 ↓
+
 Safety-constrained behavior    (RSS / CBF / SOTIF)
 
 **Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout),
@@ -165,10 +168,15 @@ Evidential Deep Learning · RSS · CBF · SOTIF (ISO 21448) · ISO 26262
 ---
 
 ## Repository Structure
+
 ├── notebooks/          # Phase 1 Colab notebook
+
 ├── scripts/            # Phase 2, 3, 5 Python scripts
+
 ├── screenshots/        # All result figures per phase
+
 ├── reports/            # Quantitative JSON results per phase
+
 └── README.md
 
 ## Dataset
