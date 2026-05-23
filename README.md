@@ -22,8 +22,6 @@ fusion adapts sensor weighting dynamically based on reliability estimates.
 **Loop 2** — When belief confidence is low, planning adapts:
 reduced speed, wider TTC margins, conservative maneuver profile.
 
-📊 [View interactive framework diagram](docs/research_framework.html)
-
 ---
 
 ## Implementation Notes
