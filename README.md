@@ -15,22 +15,14 @@ reason about which sensor to trust, and how should that uncertainty
 propagate into planning behavior?
 
 ## Framework: Two Recursive Feedback Loops
-Sensors (Camera + LiDAR + Radar)
-↓
-
-Adaptive Fusion ↔ Perception   (Loop 1: sensor trust adaptation)
-↓
-
-Perception ↔ Planning          (Loop 2: uncertainty-aware behavior)
-↓
-
-Safety-constrained behavior    (RSS / CBF / SOTIF)
 
 **Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout),
 fusion adapts sensor weighting dynamically based on reliability estimates.
 
 **Loop 2** — When belief confidence is low, planning adapts:
 reduced speed, wider TTC margins, conservative maneuver profile.
+
+📊 [View interactive framework diagram](docs/research_framework.html)
 
 ---
 
