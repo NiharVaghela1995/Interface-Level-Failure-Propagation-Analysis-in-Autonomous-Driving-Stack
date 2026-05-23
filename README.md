@@ -14,13 +14,17 @@ LiDAR and radar register nothing — how should an autonomous vehicle
 reason about which sensor to trust, and how should that uncertainty
 propagate into planning behavior?
 
-## Framework: Two Recursive Feedback Loops
+# Autonomous Driving Research Architecture
 
-**Loop 1** — When a modality degrades (camera glare, LiDAR rain dropout),
-fusion adapts sensor weighting dynamically based on reliability estimates.
+<p align="center">
+  <a href="https://NiharVaghela1995.github.io/av-perception-planning-research/">
+    <img src="docs/architecture-preview.png" width="100%">
+  </a>
+</p>
 
-**Loop 2** — When belief confidence is low, planning adapts:
-reduced speed, wider TTC margins, conservative maneuver profile.
+<p align="center">
+  Interactive architecture with uncertainty loops, safety mapping, and corruption benchmarks.
+</p>
 
 ---
 
