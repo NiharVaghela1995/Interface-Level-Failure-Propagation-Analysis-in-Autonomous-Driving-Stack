@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;padding:1rem 0 0}
+.tab{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.tab.active{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+.panel{display:none}.panel.active{display:block}
+svg text{font-family:var(--font-sans)}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Research phases diagram showing what was actually built across phases 1 through 5, including the two feedback loops, safety analysis, and corruption benchmark.</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('overview',this)">What was built</button>
+  <button class="tab" onclick="show('loop1',this)">Loop 1 — fusion</button>
+  <button class="tab" onclick="show('loop2',this)">Loop 2 — planning</button>
+  <button class="tab" onclick="show('safety',this)">Safety mapping</button>
+  <button class="tab" onclick="show('bench',this)">Corruption benchmark</button>
+</div>
+
+<!-- WHAT WAS BUILT -->
+<div id="overview" class="panel active">
+<svg width="100%" viewBox="0 0 680 820" role="img">
+<title>Overview of all five research phases mapped to the pipeline</title>
+<desc>Shows nuScenes mini sensor data flowing through the SegFormer camera backbone, GradCAM and EDL uncertainty analysis, sensor trust reweighting, uncertainty-aware Frenet planner, and SOTIF safety mapping</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- Dataset -->
+<g class="c-gray"><rect x="190" y="20" width="300" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central" font-size="13">nuScenes mini dataset</text>
+<text class="ts" x="340" y="60" text-anchor="middle" dominant-baseline="central" font-size="11">10 scenes · 404 samples · CAM_FRONT + 5 cameras · LIDAR_TOP</text></g>
+
+<line x1="340" y1="76" x2="340" y2="120" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Sensor degradation -->
+<g class="c-coral"><rect x="170" y="120" width="340" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="140" text-anchor="middle" dominant-baseline="central" font-size="13">Synthetic sensor degradation</text>
+<text class="ts" x="340" y="158" text-anchor="middle" dominant-baseline="central" font-size="11">glare (0–0.9) · LiDAR dropout (0–80%) · 8 corruption types</text></g>
+
+<!-- Phase label -->
+<text font-size="10" x="44" y="152" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="164" fill="var(--color-text-tertiary)" text-anchor="middle">1–3, 5</text>
+
+<line x1="340" y1="176" x2="340" y2="220" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Camera backbone -->
+<g class="c-blue"><rect x="170" y="220" width="340" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="240" text-anchor="middle" dominant-baseline="central" font-size="13">SegFormer-B2 camera backbone</text>
+<text class="ts" x="340" y="258" text-anchor="middle" dominant-baseline="central" font-size="11">pretrained Cityscapes · proxy for BEVFusion camera branch</text></g>
+<text font-size="10" x="44" y="252" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="264" fill="var(--color-text-tertiary)" text-anchor="middle">1–5</text>
+
+<line x1="340" y1="276" x2="340" y2="320" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Diagnosis box -->
+<g class="c-amber"><rect x="170" y="320" width="340" height="72" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="342" text-anchor="middle" dominant-baseline="central" font-size="13">Failure diagnosis</text>
+<text class="ts" x="340" y="360" text-anchor="middle" dominant-baseline="central" font-size="11">GradCAM attention shift · MC Dropout uncertainty</text>
+<text class="ts" x="340" y="378" text-anchor="middle" dominant-baseline="central" font-size="11">Evidential DL (aleatoric vs epistemic) · calibration (ECE)</text></g>
+<text font-size="10" x="44" y="356" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="368" fill="var(--color-text-tertiary)" text-anchor="middle">1, 2, 4b</text>
+
+<line x1="340" y1="392" x2="340" y2="436" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Trust reweighting -->
+<g class="c-teal"><rect x="170" y="436" width="340" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="456" text-anchor="middle" dominant-baseline="central" font-size="13">Sensor trust reweighting (Loop 1)</text>
+<text class="ts" x="340" y="474" text-anchor="middle" dominant-baseline="central" font-size="11">camera trust 0.58→0.41 at max glare · LiDAR compensates</text></g>
+<text font-size="10" x="44" y="468" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="480" fill="var(--color-text-tertiary)" text-anchor="middle">2, 3</text>
+
+<!-- Loop 1 feedback -->
+<path d="M170 464 Q90 464 90 248 Q90 248 170 248" stroke="#0F6E56" stroke-width="1.2" stroke-dasharray="5 3" fill="none" marker-end="url(#a)"/>
+<text font-size="10" x="54" y="362" fill="#0F6E56" text-anchor="middle">Loop 1</text>
+
+<line x1="340" y1="492" x2="340" y2="536" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Planner -->
+<g class="c-teal"><rect x="170" y="536" width="340" height="72" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="556" text-anchor="middle" dominant-baseline="central" font-size="13">Uncertainty-aware Frenet planner (Loop 2)</text>
+<text class="ts" x="340" y="574" text-anchor="middle" dominant-baseline="central" font-size="11">velocity · TTC margin · lateral margin · K(t) rate controller</text>
+<text class="ts" x="340" y="592" text-anchor="middle" dominant-baseline="central" font-size="11">NORMAL · CAUTIOUS · CONSERVATIVE · EMERGENCY</text></g>
+<text font-size="10" x="44" y="572" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="584" fill="var(--color-text-tertiary)" text-anchor="middle">1, 3</text>
+
+<!-- Loop 2 feedback -->
+<path d="M510 452 Q600 452 600 352 Q600 352 510 352" stroke="#993C1D" stroke-width="1.2" stroke-dasharray="5 3" fill="none" marker-end="url(#a)"/>
+<text font-size="10" x="636" y="406" fill="#993C1D" text-anchor="middle">Loop 2</text>
+
+<line x1="340" y1="608" x2="340" y2="652" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- SOTIF -->
+<g class="c-purple"><rect x="170" y="652" width="340" height="72" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="672" text-anchor="middle" dominant-baseline="central" font-size="13">SOTIF & ISO 26262 mapping</text>
+<text class="ts" x="340" y="690" text-anchor="middle" dominant-baseline="central" font-size="11">6 hazards · 5 trigger conditions · ASIL A–D · HARA table</text>
+<text class="ts" x="340" y="708" text-anchor="middle" dominant-baseline="central" font-size="11">unknown unsafe −58.3% · mean risk reduction 29.3%</text></g>
+<text font-size="10" x="44" y="688" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="700" fill="var(--color-text-tertiary)" text-anchor="middle">4a</text>
+
+<!-- Corruption benchmark -->
+<g class="c-green"><rect x="170" y="752" width="340" height="52" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="772" text-anchor="middle" dominant-baseline="central" font-size="13">Open-loop corruption benchmark</text>
+<text class="ts" x="340" y="790" text-anchor="middle" dominant-baseline="central" font-size="11">8 types × 5 severities · fog most impactful (29.9%)</text></g>
+<text font-size="10" x="44" y="778" fill="var(--color-text-tertiary)" text-anchor="middle">Phase</text>
+<text font-size="10" x="44" y="790" fill="var(--color-text-tertiary)" text-anchor="middle">5</text>
+
+<!-- vertical connector -->
+<line x1="340" y1="724" x2="340" y2="752" stroke="var(--color-border-secondary)" stroke-width="1" stroke-dasharray="4 3" fill="none" marker-end="url(#a)"/>
+</svg>
+</div>
+
+<!-- LOOP 1 -->
+<div id="loop1" class="panel">
+<svg width="100%" viewBox="0 0 680 500" role="img">
+<title>Loop 1 as actually implemented: GradCAM attention shift and MC Dropout uncertainty feeding into sigmoid trust formula</title>
+<desc>Shows the actual implementation: synthetic glare applied to nuScenes image, SegFormer processes it, GradCAM shows attention shift of 0.042, MC Dropout shows 3.7% uncertainty increase, trust formula reweights camera from 0.58 to 0.41</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- Input -->
+<g class="c-gray"><rect x="200" y="20" width="280" height="52" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="40" text-anchor="middle" dominant-baseline="central" font-size="13">nuScenes CAM_FRONT + LIDAR_TOP</text>
+<text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central" font-size="11">+ synthetic glare (0–0.9) or LiDAR dropout (0–80%)</text></g>
+
+<line x1="340" y1="72" x2="340" y2="114" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Backbone -->
+<g class="c-blue"><rect x="200" y="114" width="280" height="52" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="134" text-anchor="middle" dominant-baseline="central" font-size="13">SegFormer-B2 forward pass</text>
+<text class="ts" x="340" y="152" text-anchor="middle" dominant-baseline="central" font-size="11">semantic segmentation features · 512×512 input</text></g>
+
+<line x1="280" y1="166" x2="200" y2="210" stroke="var(--color-border-secondary)" stroke-width="1" marker-end="url(#a)" fill="none"/>
+<line x1="400" y1="166" x2="480" y2="210" stroke="var(--color-border-secondary)" stroke-width="1" marker-end="url(#a)" fill="none"/>
+
+<!-- GradCAM -->
+<g class="c-amber"><rect x="60" y="210" width="220" height="64" rx="8" stroke-width="0.5"/>
+<text class="th" x="170" y="232" text-anchor="middle" dominant-baseline="central" font-size="12">GradCAM saliency</text>
+<text class="ts" x="170" y="250" text-anchor="middle" dominant-baseline="central" font-size="11">attention shift = 0.042</text>
+<text class="ts" x="170" y="264" text-anchor="middle" dominant-baseline="central" font-size="11">clean vs glare comparison</text></g>
+
+<!-- MC Dropout -->
+<g class="c-amber"><rect x="400" y="210" width="220" height="64" rx="8" stroke-width="0.5"/>
+<text class="th" x="510" y="232" text-anchor="middle" dominant-baseline="central" font-size="12">MC Dropout (n=20)</text>
+<text class="ts" x="510" y="250" text-anchor="middle" dominant-baseline="central" font-size="11">unc clean = 0.000378</text>
+<text class="ts" x="510" y="264" text-anchor="middle" dominant-baseline="central" font-size="11">unc glare = 0.000392 (+3.7%)</text></g>
+
+<line x1="170" y1="274" x2="250" y2="320" stroke="var(--color-border-secondary)" stroke-width="1" marker-end="url(#a)" fill="none"/>
+<line x1="510" y1="274" x2="430" y2="320" stroke="var(--color-border-secondary)" stroke-width="1" marker-end="url(#a)" fill="none"/>
+
+<!-- Trust formula -->
+<g class="c-teal"><rect x="160" y="320" width="360" height="64" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="342" text-anchor="middle" dominant-baseline="central" font-size="12">EDL trust formula</text>
+<text class="ts" x="340" y="360" text-anchor="middle" dominant-baseline="central" font-size="11">0.4×σ(−5.0×(ep/ep_b−1.1)) + 0.6×σ(−2.5×(al/al_b−1.3))</text>
+<text class="ts" x="340" y="376" text-anchor="middle" dominant-baseline="central" font-size="11">camera trust: clean=0.58 → max glare=0.41</text></g>
+
+<line x1="340" y1="384" x2="340" y2="428" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Output -->
+<g class="c-green"><rect x="160" y="428" width="360" height="52" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="448" text-anchor="middle" dominant-baseline="central" font-size="13">Updated sensor trust weights</text>
+<text class="ts" x="340" y="466" text-anchor="middle" dominant-baseline="central" font-size="11">fed back as prior to fusion · Loop 1 closes</text></g>
+
+<!-- Loop 1 arrow -->
+<path d="M160 352 Q80 352 80 140 Q80 140 200 140" stroke="#0F6E56" stroke-width="1.2" stroke-dasharray="5 3" fill="none" marker-end="url(#a)"/>
+<text font-size="10" x="44" y="252" fill="#0F6E56" text-anchor="middle">Loop 1</text>
+</svg>
+</div>
+
+<!-- LOOP 2 -->
+<div id="loop2" class="panel">
+<svg width="100%" viewBox="0 0 680 520" role="img">
+<title>Loop 2 as actually implemented: uncertainty drives planning regime and rate-of-change controller</title>
+<desc>Shows the actual implementation: uncertainty feeds into trust which determines regime, Frenet planner adapts velocity and TTC margin, rate-of-change controller K(t) conditions control rate on regime</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- Uncertainty input -->
+<g class="c-amber"><rect x="190" y="20" width="300" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="40" text-anchor="middle" dominant-baseline="central" font-size="13">Uncertainty estimate</text>
+<text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central" font-size="11">MC Dropout variance OR EDL aleatoric+epistemic</text></g>
+
+<line x1="340" y1="76" x2="340" y2="118" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Trust → combined uncertainty -->
+<g class="c-teal"><rect x="190" y="118" width="300" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="138" text-anchor="middle" dominant-baseline="central" font-size="13">Combined uncertainty score</text>
+<text class="ts" x="340" y="156" text-anchor="middle" dominant-baseline="central" font-size="11">1 − (0.6×cam_trust + 0.4×lid_trust)</text></g>
+
+<line x1="340" y1="174" x2="340" y2="218" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Regime -->
+<g class="c-coral"><rect x="190" y="218" width="300" height="72" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="240" text-anchor="middle" dominant-baseline="central" font-size="13">Regime classification</text>
+<text class="ts" x="340" y="258" text-anchor="middle" dominant-baseline="central" font-size="11">unc > 0.6 → CONSERVATIVE</text>
+<text class="ts" x="340" y="274" text-anchor="middle" dominant-baseline="central" font-size="11">unc > 0.3 → CAUTIOUS · else NORMAL</text></g>
+
+<line x1="340" y1="290" x2="340" y2="334" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Planning outputs -->
+<g class="c-teal"><rect x="170" y="334" width="340" height="72" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="354" text-anchor="middle" dominant-baseline="central" font-size="13">Frenet planner outputs</text>
+<text class="ts" x="340" y="372" text-anchor="middle" dominant-baseline="central" font-size="11">velocity = 50×(1−0.8×unc) km/h</text>
+<text class="ts" x="340" y="390" text-anchor="middle" dominant-baseline="central" font-size="11">TTC = 2.0+3.0×unc s · lateral = 1.5+2.0×unc m</text></g>
+
+<line x1="340" y1="406" x2="340" y2="450" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Rate controller -->
+<g class="c-purple"><rect x="170" y="450" width="340" height="52" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="470" text-anchor="middle" dominant-baseline="central" font-size="13">Rate-of-change controller K(t)</text>
+<text class="ts" x="340" y="488" text-anchor="middle" dominant-baseline="central" font-size="11">K: 0.8 NORMAL · 0.4 CAUTIOUS · 0.15 CONSERVATIVE · 0.0 EMERGENCY</text></g>
+
+<!-- Loop 2 arrow -->
+<path d="M490 234 Q590 234 590 136 Q590 136 490 136" stroke="#993C1D" stroke-width="1.2" stroke-dasharray="5 3" fill="none" marker-end="url(#a)"/>
+<text font-size="10" x="636" y="190" fill="#993C1D" text-anchor="middle">Loop 2</text>
+</svg>
+</div>
+
+<!-- SAFETY MAPPING -->
+<div id="safety" class="panel">
+<svg width="100%" viewBox="0 0 680 580" role="img">
+<title>SOTIF and ISO 26262 safety mapping as actually implemented in Phase 4a</title>
+<desc>Shows the five trigger conditions T1-T5, six hazards H1-H6 with ASIL levels, key metrics, and which hazards are fully addressed versus requiring future work</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- SOTIF triggers -->
+<g class="c-blue"><rect x="44" y="20" width="592" height="100" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="44" text-anchor="middle" dominant-baseline="central" font-size="13">SOTIF trigger conditions (ISO 21448)</text>
+<text class="ts" x="340" y="64" text-anchor="middle" dominant-baseline="central" font-size="11">T1: camera glare (Cl. 8.3) · T2: LiDAR rain dropout (Cl. 8.3)</text>
+<text class="ts" x="340" y="82" text-anchor="middle" dominant-baseline="central" font-size="11">T3: combined glare+rain (Cl. 8.4) · T4: ped+degraded sensors (Cl. 8.4)</text>
+<text class="ts" x="340" y="100" text-anchor="middle" dominant-baseline="central" font-size="11">T5: extreme combined failure (Cl. 8.4)</text></g>
+
+<line x1="340" y1="120" x2="340" y2="154" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Hazards -->
+<g class="c-coral"><rect x="44" y="154" width="592" height="120" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="176" text-anchor="middle" dominant-baseline="central" font-size="13">Hazard analysis (ISO 26262 HARA)</text>
+<text class="ts" x="340" y="196" text-anchor="middle" dominant-baseline="central" font-size="11">H1: false positive under glare → ASIL B</text>
+<text class="ts" x="340" y="214" text-anchor="middle" dominant-baseline="central" font-size="11">H2: missed pedestrian under glare → ASIL D</text>
+<text class="ts" x="340" y="232" text-anchor="middle" dominant-baseline="central" font-size="11">H3: LiDAR range error in rain → ASIL C · H4: combined degradation → ASIL C</text>
+<text class="ts" x="340" y="250" text-anchor="middle" dominant-baseline="central" font-size="11">H5: ped missed at crossing → ASIL D · H6: extreme failure → ASIL B</text></g>
+
+<line x1="340" y1="274" x2="340" y2="310" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Key metrics -->
+<g class="c-green"><rect x="44" y="310" width="592" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="332" text-anchor="middle" dominant-baseline="central" font-size="13">Key safety metrics achieved</text>
+<text class="ts" x="340" y="352" text-anchor="middle" dominant-baseline="central" font-size="11">unknown unsafe scenarios: 12 → 5 (−58.3%) · mean risk reduction: 29.3%</text>
+<text class="ts" x="340" y="372" text-anchor="middle" dominant-baseline="central" font-size="11">fragility boundary: CAUTIOUS at glare > 0.45 OR dropout > 35%</text></g>
+
+<line x1="340" y1="390" x2="340" y2="424" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Coverage status -->
+<g class="c-teal"><rect x="44" y="424" width="280" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="184" y="446" text-anchor="middle" dominant-baseline="central" font-size="12">Fully addressed (3/6)</text>
+<text class="ts" x="184" y="464" text-anchor="middle" dominant-baseline="central" font-size="11">H1 ASIL B ✓ · H3 ASIL C ✓</text>
+<text class="ts" x="184" y="482" text-anchor="middle" dominant-baseline="central" font-size="11">H6 ASIL B ✓</text></g>
+
+<g class="c-amber"><rect x="356" y="424" width="280" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="496" y="446" text-anchor="middle" dominant-baseline="central" font-size="12">Requires Phase 6 (3/6)</text>
+<text class="ts" x="496" y="464" text-anchor="middle" dominant-baseline="central" font-size="11">H2 ASIL D · H4 ASIL C</text>
+<text class="ts" x="496" y="482" text-anchor="middle" dominant-baseline="central" font-size="11">H5 ASIL D — need real BEVFusion</text></g>
+</svg>
+</div>
+
+<!-- CORRUPTION BENCHMARK -->
+<div id="bench" class="panel">
+<svg width="100%" viewBox="0 0 680 540" role="img">
+<title>Phase 5 open-loop corruption benchmark results</title>
+<desc>Shows the eight corruption types evaluated at five severity levels, key findings including fog as most impactful, and the planning regime triggered by each corruption type</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<!-- Setup -->
+<g class="c-gray"><rect x="44" y="20" width="592" height="56" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="40" text-anchor="middle" dominant-baseline="central" font-size="13">Benchmark setup</text>
+<text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central" font-size="11">nuScenes mini · SegFormer-B2 · MC Dropout (n=15) · open-loop evaluation only</text></g>
+
+<line x1="340" y1="76" x2="340" y2="112" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Corruption types -->
+<g class="c-blue"><rect x="44" y="112" width="592" height="100" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="134" text-anchor="middle" dominant-baseline="central" font-size="13">8 corruption types × 5 severities (0.2–1.0)</text>
+<text class="ts" x="340" y="154" text-anchor="middle" dominant-baseline="central" font-size="11">camera only: glare · brightness · darkness · motion blur</text>
+<text class="ts" x="340" y="172" text-anchor="middle" dominant-baseline="central" font-size="11">camera+LiDAR: fog (fog_dropout) · rain (rain_dropout) · snow (snow_noise)</text>
+<text class="ts" x="340" y="190" text-anchor="middle" dominant-baseline="central" font-size="11">clean baseline included for reference</text></g>
+
+<line x1="340" y1="212" x2="340" y2="248" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Results -->
+<g class="c-coral"><rect x="44" y="248" width="280" height="100" rx="8" stroke-width="0.5"/>
+<text class="th" x="184" y="270" text-anchor="middle" dominant-baseline="central" font-size="12">Impact ranking</text>
+<text class="ts" x="184" y="290" text-anchor="middle" dominant-baseline="central" font-size="11">1. fog: 29.9% unc increase</text>
+<text class="ts" x="184" y="308" text-anchor="middle" dominant-baseline="central" font-size="11">2. rain · 3. darkness · 4. glare</text>
+<text class="ts" x="184" y="326" text-anchor="middle" dominant-baseline="central" font-size="11">8. snow: 8.7% (least impactful)</text></g>
+
+<g class="c-amber"><rect x="356" y="248" width="280" height="100" rx="8" stroke-width="0.5"/>
+<text class="th" x="496" y="270" text-anchor="middle" dominant-baseline="central" font-size="12">Planning response</text>
+<text class="ts" x="496" y="290" text-anchor="middle" dominant-baseline="central" font-size="11">CONSERVATIVE triggered by:</text>
+<text class="ts" x="496" y="308" text-anchor="middle" dominant-baseline="central" font-size="11">glare · brightness · darkness</text>
+<text class="ts" x="496" y="326" text-anchor="middle" dominant-baseline="central" font-size="11">fog · blur · snow · rain</text></g>
+
+<line x1="340" y1="348" x2="340" y2="384" stroke="var(--color-border-secondary)" stroke-width="1.5" marker-end="url(#a)" fill="none"/>
+
+<!-- Key finding -->
+<g class="c-green"><rect x="44" y="384" width="592" height="80" rx="8" stroke-width="0.5"/>
+<text class="th" x="340" y="406" text-anchor="middle" dominant-baseline="central" font-size="13">Key finding</text>
+<text class="ts" x="340" y="426" text-anchor="middle" dominant-baseline="central" font-size="11">All 7 non-clean corruptions triggered CONSERVATIVE at high severity</text>
+<text class="ts" x="340" y="446" text-anchor="middle" dominant-baseline="central" font-size="11">Loop 1 + Loop 2 respond consistently across all corruption types</text></g>
+
+<!-- Limitation note -->
+<g class="c-gray"><rect x="44" y="484" width="592" height="44" rx="8" stroke-width="0.5"/>
+<text class="ts" x="340" y="506" text-anchor="middle" dominant-baseline="central" font-size="11">Note: open-loop only · no closed-loop vehicle control · nuScenes mini split (10 scenes)</text></g>
+</svg>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

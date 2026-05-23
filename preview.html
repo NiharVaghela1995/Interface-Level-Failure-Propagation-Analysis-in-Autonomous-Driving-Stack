@@ -1,0 +1,101 @@
+
+  Autonomous Driving Research Architecture
+
+Interactive systems-engineering overview of the full uncertainty-aware
+autonomous driving research stack, including perception degradation
+analysis, trust reweighting loops, uncertainty-aware planning, SOTIF/ISO
+26262 safety mapping, and corruption robustness benchmarking.
+
+Perception
+Planning & Fusion
+Diagnostics & Uncertainty
+Safety
+Evaluation
+Datasets & Inputs
+
+
+    Research phases diagram showing what was actually built across
+    phases 1 through 5, including the two feedback loops, safety
+    analysis, and corruption benchmark.
+
+What was built
+
+Loop 1 — fusion
+
+Loop 2 — planning
+
+Safety mapping
+
+Corruption benchmark
+
+Overview of all five research phases mapped to the pipeline Shows
+nuScenes mini sensor data flowing through the SegFormer camera backbone,
+GradCAM and EDL uncertainty analysis, sensor trust reweighting,
+uncertainty-aware Frenet planner, and SOTIF safety mapping nuScenes mini
+dataset 10 scenes · 404 samples · CAM_FRONT + 5 cameras · LIDAR_TOP
+Synthetic sensor degradation glare (0–0.9) · LiDAR dropout (0–80%) · 8
+corruption types Phase 1–3, 5 SegFormer-B2 camera backbone pretrained
+Cityscapes · proxy for BEVFusion camera branch Phase 1–5 Failure
+diagnosis GradCAM attention shift · MC Dropout uncertainty Evidential DL
+(aleatoric vs epistemic) · calibration (ECE) Phase 1, 2, 4b Sensor trust
+reweighting (Loop 1) camera trust 0.58→0.41 at max glare · LiDAR
+compensates Phase 2, 3 Loop 1 Uncertainty-aware Frenet planner (Loop 2)
+velocity · TTC margin · lateral margin · K(t) rate controller NORMAL ·
+CAUTIOUS · CONSERVATIVE · EMERGENCY Phase 1, 3 Loop 2 SOTIF & ISO 26262
+mapping 6 hazards · 5 trigger conditions · ASIL A–D · HARA table unknown
+unsafe −58.3% · mean risk reduction 29.3% Phase 4a Open-loop corruption
+benchmark 8 types × 5 severities · fog most impactful (29.9%) Phase 5
+Loop 1 as actually implemented: GradCAM attention shift and MC Dropout
+uncertainty feeding into sigmoid trust formula Shows the actual
+implementation: synthetic glare applied to nuScenes image, SegFormer
+processes it, GradCAM shows attention shift of 0.042, MC Dropout shows
+3.7% uncertainty increase, trust formula reweights camera from 0.58 to
+0.41 nuScenes CAM_FRONT + LIDAR_TOP + synthetic glare (0–0.9) or LiDAR
+dropout (0–80%) SegFormer-B2 forward pass semantic segmentation features
+· 512×512 input GradCAM saliency attention shift = 0.042 clean vs glare
+comparison MC Dropout (n=20) unc clean = 0.000378 unc glare = 0.000392
+(+3.7%) EDL trust formula 0.4×σ(−5.0×(ep/ep_b−1.1)) + 0.6×σ(−2.5×(al/
+al_b−1.3)) camera trust: clean=0.58 → max glare=0.41 Updated sensor
+trust weights fed back as prior to fusion · Loop 1 closes Loop 1
+Loop 2 as actually implemented: uncertainty drives planning regime and
+rate-of-change controller Shows the actual implementation: uncertainty
+feeds into trust which determines regime, Frenet planner adapts velocity
+and TTC margin, rate-of-change controller K(t) conditions control rate
+on regime Uncertainty estimate MC Dropout variance OR EDL
+aleatoric+epistemic Combined uncertainty score 1 − (0.6×cam_trust +
+0.4×lid_trust) Regime classification unc > 0.6 → CONSERVATIVE unc > 0.3
+→ CAUTIOUS · else NORMAL Frenet planner outputs velocity =
+50×(1−0.8×unc) km/h TTC = 2.0+3.0×unc s · lateral = 1.5+2.0×unc m Rate-
+of-change controller K(t) K: 0.8 NORMAL · 0.4 CAUTIOUS · 0.15
+CONSERVATIVE · 0.0 EMERGENCY Loop 2
+SOTIF and ISO 26262 safety mapping as actually implemented in Phase 4a
+Shows the five trigger conditions T1-T5, six hazards H1-H6 with ASIL
+levels, key metrics, and which hazards are fully addressed versus
+requiring future work SOTIF trigger conditions (ISO 21448) T1: camera
+glare (Cl. 8.3) · T2: LiDAR rain dropout (Cl. 8.3) T3: combined
+glare+rain (Cl. 8.4) · T4: ped+degraded sensors (Cl. 8.4) T5: extreme
+combined failure (Cl. 8.4) Hazard analysis (ISO 26262 HARA) H1: false
+positive under glare → ASIL B H2: missed pedestrian under glare → ASIL D
+H3: LiDAR range error in rain → ASIL C · H4: combined degradation → ASIL
+C H5: ped missed at crossing → ASIL D · H6: extreme failure → ASIL B Key
+safety metrics achieved unknown unsafe scenarios: 12 → 5 (−58.3%) · mean
+risk reduction: 29.3% fragility boundary: CAUTIOUS at glare > 0.45 OR
+dropout > 35% Fully addressed (3/6) H1 ASIL B ✓ · H3 ASIL C ✓ H6 ASIL B
+✓ Requires Phase 6 (3/6) H2 ASIL D · H4 ASIL C H5 ASIL D — need real
+BEVFusion
+Phase 5 open-loop corruption benchmark results Shows the eight
+corruption types evaluated at five severity levels, key findings
+including fog as most impactful, and the planning regime triggered by
+each corruption type Benchmark setup nuScenes mini · SegFormer-B2 · MC
+Dropout (n=15) · open-loop evaluation only 8 corruption types × 5
+severities (0.2–1.0) camera only: glare · brightness · darkness · motion
+blur camera+LiDAR: fog (fog_dropout) · rain (rain_dropout) · snow
+(snow_noise) clean baseline included for reference Impact ranking 1.
+fog: 29.9% unc increase 2. rain · 3. darkness · 4. glare 8. snow: 8.7%
+(least impactful) Planning response CONSERVATIVE triggered by: glare ·
+brightness · darkness fog · blur · snow · rain Key finding All 7 non-
+clean corruptions triggered CONSERVATIVE at high severity Loop 1 + Loop
+2 respond consistently across all corruption types Note: open-loop only
+· no closed-loop vehicle control · nuScenes mini split (10 scenes)
+Designed for GitHub Pages presentation • Optimized dark-mode SVG
+rendering • Interactive research documentation
