@@ -1,0 +1,72 @@
+{
+  "phase": 5,
+  "title": "nuScenes-C Corruption Benchmark",
+  "corruption_types": [
+    "clean",
+    "glare",
+    "brightness",
+    "darkness",
+    "fog",
+    "motion_blur",
+    "snow",
+    "rain"
+  ],
+  "severities": [
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1.0
+  ],
+  "baseline": {
+    "confidence": 0.9460150599479675,
+    "uncertainty": 0.00022716785315424204
+  },
+  "corruption_ranking": [
+    {
+      "corruption": "fog",
+      "mean_unc_increase_pct": 29.943908264863886
+    },
+    {
+      "corruption": "rain",
+      "mean_unc_increase_pct": 26.91824714801033
+    },
+    {
+      "corruption": "glare",
+      "mean_unc_increase_pct": 24.43332767914841
+    },
+    {
+      "corruption": "motion_blur",
+      "mean_unc_increase_pct": 22.337675781520243
+    },
+    {
+      "corruption": "brightness",
+      "mean_unc_increase_pct": 21.75450212339413
+    },
+    {
+      "corruption": "darkness",
+      "mean_unc_increase_pct": 20.462002852374013
+    },
+    {
+      "corruption": "clean",
+      "mean_unc_increase_pct": 12.11901768871611
+    },
+    {
+      "corruption": "snow",
+      "mean_unc_increase_pct": 8.65572778328107
+    }
+  ],
+  "key_findings": {
+    "most_impactful": "fog",
+    "least_impactful": "snow",
+    "conservative_corruptions": [
+      "glare",
+      "brightness",
+      "darkness",
+      "fog",
+      "motion_blur",
+      "snow",
+      "rain"
+    ]
+  }
+}
