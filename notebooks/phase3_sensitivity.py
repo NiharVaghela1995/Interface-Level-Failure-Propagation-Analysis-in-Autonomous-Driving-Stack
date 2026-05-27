@@ -84,7 +84,7 @@ class UAPlanner:
         velocity = 50.0 * (1.0 - 0.8*combined)
         ttc      = 2.0  + 3.0*combined
         margin   = 1.5  + 2.0*combined
-        mode = 'CONSERVATIVE' if combined>0.6 else 'CAUTIOUS' if combined>0.3 else 'NORMAL'
+        mode = 'CONSERVATIVE' if combined > 0.5 else 'CAUTIOUS' if combined >= 0.25 else 'NORMAL'
         return {'velocity':velocity,'ttc':ttc,'margin':margin,'combined_unc':combined,'mode':mode}
 
 planner = UAPlanner()
