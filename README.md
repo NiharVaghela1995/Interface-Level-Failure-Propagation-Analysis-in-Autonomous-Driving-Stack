@@ -159,7 +159,7 @@ fog, motion blur, snow, rain — each at 5 severity levels (0.2 → 1.0)
 
 ## Research Roadmap
 
-| Phase | Focus | Status |
+| V&V Objective | Focus | Status |
 |---|---|---|
 | Phase 1 | GradCAM + MC Dropout + Loop 2 planning demo | ✅ Complete |
 | Phase 2 | Multi-camera GradCAM + adaptive sensor trust | ✅ Complete |
