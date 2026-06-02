@@ -127,6 +127,17 @@ Loop 2 = behavioral adaptation measurement.
 ![EDL Comparison](screenshots/phase4b/phase4b_01_edl_comparison.png)
 ![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
 
+## === EDL vs MC DROPOUT COMPARISON ===
+ Glare |  MC trust | EDL trust |  MC vel | EDL vel |     Δvel
+-----------------------------------------------------------------
+  0.00 |     0.609 |     0.656 |    45.9 |    50.0 |     -4.1
+  0.15 |     0.596 |     0.656 |    44.6 |    50.0 |     -5.4
+  0.30 |     0.483 |     0.656 |    33.3 |    50.0 |    -16.7
+  0.45 |     0.550 |     0.656 |    40.0 |    50.0 |    -10.0
+  0.60 |     0.586 |     0.657 |    43.6 |    50.0 |     -6.4
+  0.75 |     0.500 |     0.657 |    35.0 |    50.0 |    -15.0
+  0.90 |     0.242 |     0.656 |    30.0 |    50.0 |    -20.0
+
 **Key findings:**
 - EDL separates aleatoric uncertainty (irreducible sensor noise — the glare)
   from epistemic uncertainty (model ignorance — novel scenario)
