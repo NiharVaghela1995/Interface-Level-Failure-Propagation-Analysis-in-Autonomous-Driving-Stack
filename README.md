@@ -96,7 +96,7 @@ Loop 2 = behavioral adaptation measurement.
 ![Risk Analysis](screenshots/phase4a/phase4_02_risk_analysis.png)
 ![Complete Summary](screenshots/phase4a/phase4_03_complete_summary.png)
 
-## Verification & Validation Traceability
+**Verification & Validation Traceability:**
 
 | Requirement | Hazard | Scenario | Phase Result | Status | Gap |
 |------------|---------|----------|-------------|--------|-----|
@@ -125,7 +125,7 @@ Loop 2 = behavioral adaptation measurement.
 ![EDL Comparison](screenshots/phase4b/phase4b_01_edl_comparison.png)
 ![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
 
-**=== EDL vs MC DROPOUT COMPARISON ===**
+**EDL vs MC DROPOUT COMPARISON:**
 | Glare Intensity | MC Trust | EDL Trust | MC Velocity (km/h) | EDL Velocity (km/h) | Δ Velocity (MC − EDL) (km/h) |
 | --------------- | -------- | --------- | ------------------ | ------------------- | ---------------------------- |
 | 0.00            | 0.609    | 0.656     | 45.9               | 50.0                | -4.1                         |
@@ -136,7 +136,7 @@ Loop 2 = behavioral adaptation measurement.
 | 0.75            | 0.500    | 0.657     | 35.0               | 50.0                | -15.0                        |
 | 0.90            | 0.242    | 0.656     | 30.0               | 50.0                | -20.0                        |
 
-**Summary Statistics**
+**Summary Statistics:**
 | Metric                  | MC Dropout | EDL   |
 | ----------------------- | ---------- | ----- |
 | Mean Trust              | 0.509      | 0.656 |
