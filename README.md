@@ -22,8 +22,6 @@
 ---
 
 ## Framework Overview
-Describe the two-loop architecture AS a failure propagation measurement
-system, not as a perception project.
 
 Loop 1 = interface trust estimation.
 
