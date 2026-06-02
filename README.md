@@ -18,7 +18,7 @@ propagate into planning behavior?
 
 <p align="center">
   <a href="https://NiharVaghela1995.github.io/av-perception-planning-research/av_research_phases_actual.html">
-    <img src="./Architecture.png" width="100%">
+    <img src="./docs/Architecture.png" width="100%">
   </a>
 </p>
 
