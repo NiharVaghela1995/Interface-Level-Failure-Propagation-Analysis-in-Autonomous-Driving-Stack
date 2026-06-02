@@ -1,4 +1,4 @@
-# Active Perception & Uncertainty-Aware Planning for Autonomous Vehicles
+# Interface-Level Failure Propagation Analysis in Autonomous Driving Stacks
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue)
 ![Domain](https://img.shields.io/badge/domain-AV%20Safety%20%26%20Validation-green)
