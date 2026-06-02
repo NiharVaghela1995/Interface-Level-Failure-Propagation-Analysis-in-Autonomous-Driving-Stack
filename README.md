@@ -98,6 +98,17 @@ Loop 2 = behavioral adaptation measurement.
 ![Risk Analysis](screenshots/phase4a/phase4_02_risk_analysis.png)
 ![Complete Summary](screenshots/phase4a/phase4_03_complete_summary.png)
 
+## Verification & Validation Traceability
+
+| Requirement | Hazard | Scenario | Phase Result | Status | Gap |
+|------------|---------|----------|-------------|--------|-----|
+| SG1 Confidence threshold | H1,H2 | T1 | Glare increases uncertainty by 24.4% | Partially Verified | Need detector-level validation |
+| SG2 TTC scaling | H3 | T2 | Safety mechanism implemented | Partially Verified | Need closed-loop simulation |
+| SG3 CONSERVATIVE regime | H4 | T3 | 29.3% risk reduction vs baseline | Verified in framework | Need real perception stack |
+| SG4 Affordance override | H5 | T4 | ASIL D mitigation path defined | Partially Verified | Need pedestrian robustness testing |
+| SG5 MRC trigger | H6 | T5 | Extreme failure mitigation defined | Partially Verified | Need emergency maneuver validation |
+| ODD robustness coverage | H1-H6 | T1-T5 | 8 corruption families benchmarked | Verified | Need real-world datasets |
+
 **Key findings:**
 - 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
 - 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined,
