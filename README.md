@@ -110,12 +110,12 @@ Loop 2 = behavioral adaptation measurement.
 **Key findings:**
 Key findings:
 
-• 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
-• 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined degradation, pedestrian with degraded sensors, and extreme combined failure
-• Unknown unsafe scenario space reduced from 12 to 5 combinations (58.3% reduction)
-• Mean risk reduction of 29.3% compared with a naive uncertainty-thresholding baseline
-• Highest-criticality hazards were H2 and H5 (ASIL D)
-• Safety mechanisms achieved partial coverage across all hazards, but full validation requires integration with a real BEVFusion perception stack (Phase 6)
+- 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
+- 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined degradation, pedestrian with degraded sensors, and extreme combined failure
+- Unknown unsafe scenario space reduced from 12 to 5 combinations (58.3% reduction)
+- Mean risk reduction of 29.3% compared with a naive uncertainty-thresholding baseline
+- Highest-criticality hazards were H2 and H5 (ASIL D)
+- Safety mechanisms achieved partial coverage across all hazards, but full validation requires integration with a real BEVFusion perception stack (Phase 6)
 
 ---
 
