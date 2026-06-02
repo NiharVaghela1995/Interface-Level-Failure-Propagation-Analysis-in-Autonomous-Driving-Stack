@@ -9,10 +9,7 @@
 
 ## Research Question
 
-When camera and LiDAR disagree — camera detects a pedestrian,
-LiDAR and radar register nothing — how should an autonomous vehicle
-reason about which sensor to trust, and how should that uncertainty
-propagate into planning behavior?
+"In modular AV stacks, how do failures injected at sensor and algorithmic interfaces propagate downstream — and how does uncertainty-aware adaptation reduce that propagation?"
 
 # Autonomous Driving Research Architecture
 
@@ -21,6 +18,14 @@ propagate into planning behavior?
     <img src="./docs/Architecture.png" width="100%">
   </a>
 </p>
+
+---
+
+## Framework Overview
+Describe the two-loop architecture AS a failure propagation measurement
+system, not as a perception project.
+Loop 1 = interface trust estimation
+Loop 2 = behavioral adaptation measurement
 
 ---
 
@@ -123,6 +128,22 @@ propagate into planning behavior?
 
 ![Phase 5 Benchmark](screenshots/phase5/phase5_01_corruption_benchmark.png)
 
+**ODD Coverage Matrix table:** 
+## ODD Coverage Matrix
+
+| Scenario / Corruption | Pedestrian | Vehicle | Cyclist | Static Obstacle |
+| --------------------- | ---------- | ------- | ------- | --------------- |
+| Clean                 | ✓          | ✓       | ✓       | ✓               |
+| Glare                 | ✓          | ✓       | ✓       | ✓               |
+| Brightness            | ✓          | ✓       | ✓       | ✓               |
+| Darkness              | ✓          | ✓       | ✓       | ✓               |
+| Fog                   | ✓          | ✓       | ✓       | ✓               |
+| Motion Blur           | ✓          | ✓       | ✓       | ✓               |
+| Snow                  | ✓          | ✓       | ✓       | ✓               |
+| Rain                  | ✓          | ✓       | ✓       | ✓               |
+
+**Legend:** ✓ = Tested, - = Not Tested
+
 **Corruption types evaluated:** clean, glare, brightness, darkness,
 fog, motion blur, snow, rain — each at 5 severity levels (0.2 → 1.0)
 
@@ -154,20 +175,6 @@ fog, motion blur, snow, rain — each at 5 severity levels (0.2 → 1.0)
 PyTorch · SegFormer (camera backbone proxy) · nuScenes devkit ·
 GradCAM · Captum · Conformal Prediction (MAPIE) ·
 Evidential Deep Learning · RSS · CBF · SOTIF (ISO 21448) · ISO 26262
-
----
-
-## Repository Structure
-
-├── notebooks/          # Phase 1 Colab notebook
-
-├── scripts/            # Phase 2, 3, 5 Python scripts
-
-├── screenshots/        # All result figures per phase
-
-├── reports/            # Quantitative JSON results per phase
-
-└── README.md
 
 ## Dataset
 nuScenes mini (10 scenes, 404 samples) — [nuscenes.org](https://nuscenes.org)
