@@ -45,7 +45,7 @@ propagate into planning behavior?
 
 ## Phase 1 Results — GradCAM + MC Dropout + Planning Demo
 
-![Summary](screenshots/07_summary.png)
+![Summary](screenshots/phase1/07_summary.png)
 
 **Key findings:**
 - GradCAM identifies which image regions drive detection decisions
@@ -57,8 +57,8 @@ propagate into planning behavior?
 
 ## Phase 2 Results — Multi-Camera GradCAM + Sensor Trust
 
-![Phase 2 GradCAM](screenshots/phase2_01_multicam.png)
-![Phase 2 Trust](screenshots/phase2_02_trust.png)
+![Phase 2 GradCAM](screenshots/phase2/phase2_01_multicam.png)
+![Phase 2 Trust](screenshots/phase2/phase2_02_trust.png)
 
 **Key findings:**
 - Camera confidence score remains stable under glare (0.939 → 0.939)
@@ -72,9 +72,9 @@ propagate into planning behavior?
 
 ## Phase 3 Results — 7×7 Sensitivity Matrix
 
-![Phase 3 Sensitivity Matrix](screenshots/phase3_01_sensitivity_matrix.png)
-![Phase 3 Cross Section](screenshots/phase3_02_cross_section.png)
-![Phase 3 Mode Map](screenshots/phase3_03_mode_map.png)
+![Phase 3 Sensitivity Matrix](screenshots/phase3/phase3_01_sensitivity_matrix.png)
+![Phase 3 Cross Section](screenshots/phase3/phase3_02_cross_section.png)
+![Phase 3 Mode Map](screenshots/phase3/phase3_03_mode_map.png)
 
 **Key findings:**
 - Camera trust drops from 0.58 → 0.41 at maximum simulated glare
@@ -87,9 +87,9 @@ propagate into planning behavior?
 
 ## Phase 4a Results — SOTIF & ISO 26262 Safety Analysis
 
-![SOTIF Classification](screenshots/phase4/phase4_01_sotif_classification.png)
-![Risk Analysis](screenshots/phase4/phase4_02_risk_analysis.png)
-![Complete Summary](screenshots/phase4/phase4_03_complete_summary.png)
+![SOTIF Classification](screenshots/phase4a/phase4_01_sotif_classification.png)
+![Risk Analysis](screenshots/phase4a/phase4_02_risk_analysis.png)
+![Complete Summary](screenshots/phase4a/phase4_03_complete_summary.png)
 
 **Key findings:**
 - 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
