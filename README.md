@@ -127,24 +127,37 @@ Loop 2 = behavioral adaptation measurement.
 ![EDL Comparison](screenshots/phase4b/phase4b_01_edl_comparison.png)
 ![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
 
-## === EDL vs MC DROPOUT COMPARISON ===
- Glare |  MC trust | EDL trust |  MC vel | EDL vel |     Δvel
------------------------------------------------------------------
-  0.00 |     0.609 |     0.656 |    45.9 |    50.0 |     -4.1
-  0.15 |     0.596 |     0.656 |    44.6 |    50.0 |     -5.4
-  0.30 |     0.483 |     0.656 |    33.3 |    50.0 |    -16.7
-  0.45 |     0.550 |     0.656 |    40.0 |    50.0 |    -10.0
-  0.60 |     0.586 |     0.657 |    43.6 |    50.0 |     -6.4
-  0.75 |     0.500 |     0.657 |    35.0 |    50.0 |    -15.0
-  0.90 |     0.242 |     0.656 |    30.0 |    50.0 |    -20.0
+**=== EDL vs MC DROPOUT COMPARISON ===**
+| Glare Intensity | MC Trust | EDL Trust | MC Velocity (km/h) | EDL Velocity (km/h) | Δ Velocity (MC − EDL) (km/h) |
+| --------------- | -------- | --------- | ------------------ | ------------------- | ---------------------------- |
+| 0.00            | 0.609    | 0.656     | 45.9               | 50.0                | -4.1                         |
+| 0.15            | 0.596    | 0.656     | 44.6               | 50.0                | -5.4                         |
+| 0.30            | 0.483    | 0.656     | 33.3               | 50.0                | -16.7                        |
+| 0.45            | 0.550    | 0.656     | 40.0               | 50.0                | -10.0                        |
+| 0.60            | 0.586    | 0.657     | 43.6               | 50.0                | -6.4                         |
+| 0.75            | 0.500    | 0.657     | 35.0               | 50.0                | -15.0                        |
+| 0.90            | 0.242    | 0.656     | 30.0               | 50.0                | -20.0                        |
+
+**Summary Statistics**
+| Metric                  | MC Dropout | EDL   |
+| ----------------------- | ---------- | ----- |
+| Mean Trust              | 0.509      | 0.656 |
+| Min Trust               | 0.242      | 0.656 |
+| Max Trust               | 0.609      | 0.657 |
+| Mean Velocity (km/h)    | 38.9       | 50.0  |
+| Minimum Velocity (km/h) | 30.0       | 50.0  |
+| Maximum Velocity (km/h) | 45.9       | 50.0  |
+
+
 
 **Key findings:**
-- EDL separates aleatoric uncertainty (irreducible sensor noise — the glare)
-  from epistemic uncertainty (model ignorance — novel scenario)
-- EDL trust formula: 0.4×sigmoid(−5.0×(ep/ep_b−1.1)) + 0.6×sigmoid(−2.5×(al/al_b−1.3))
-- Epistemic penalized more steeply (k=5.0) than aleatoric (k=2.5) —
-  unknown scenarios are more dangerous than known sensor noise
-- EDL responds earlier and steeper to degradation than MC Dropout
+| Finding             | Observation                                                                                                                                         |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Trust Sensitivity   | MC Dropout trust decreases substantially as glare increases, while EDL trust remains nearly constant.                                               |
+| Velocity Adaptation | MC Dropout triggers progressively lower planned velocities under severe glare conditions.                                                           |
+| EDL Behavior        | EDL maintains maximum velocity (50 km/h) across all glare levels, indicating little or no uncertainty-driven adaptation.                            |
+| Largest Difference  | At glare = 0.90, MC velocity is 30 km/h while EDL remains at 50 km/h (20 km/h difference).                                                          |
+| Safety Implication  | MC Dropout appears more responsive to perception degradation, whereas the current EDL implementation may be overconfident under adverse conditions. |
 
 ---
 
