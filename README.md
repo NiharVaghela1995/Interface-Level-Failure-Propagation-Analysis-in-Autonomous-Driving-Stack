@@ -108,15 +108,14 @@ Loop 2 = behavioral adaptation measurement.
 | ODD robustness coverage | H1-H6 | T1-T5 | 8 corruption families benchmarked | Verified | Need real-world datasets |
 
 **Key findings:**
-- 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
-- 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined,
-  pedestrian + degraded sensors, extreme combined failure
-- Unknown unsafe scenario space reduced: 12 → 5 combinations (58.3%)
-- Mean risk reduction: 29.3% vs naive uncertainty-thresholding baseline
-- ASIL D hazards: H2 (missed pedestrian under glare) and H5
-  (undetected pedestrian at crossing under combined sensor failure)
-- Safety coverage: 3/6 hazards fully addressed by current framework;
-  3/6 require Phase 6 (real BEVFusion) for complete validation
+Key findings:
+
+• 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
+• 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined degradation, pedestrian with degraded sensors, and extreme combined failure
+• Unknown unsafe scenario space reduced from 12 to 5 combinations (58.3% reduction)
+• Mean risk reduction of 29.3% compared with a naive uncertainty-thresholding baseline
+• Highest-criticality hazards were H2 and H5 (ASIL D)
+• Safety mechanisms achieved partial coverage across all hazards, but full validation requires integration with a real BEVFusion perception stack (Phase 6)
 
 ---
 
