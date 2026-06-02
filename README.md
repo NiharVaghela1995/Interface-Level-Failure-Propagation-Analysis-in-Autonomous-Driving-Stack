@@ -108,7 +108,6 @@ Loop 2 = behavioral adaptation measurement.
 | ODD robustness coverage | H1-H6 | T1-T5 | 8 corruption families benchmarked | Verified | Need real-world datasets |
 
 **Key findings:**
-Key findings:
 
 - 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
 - 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined degradation, pedestrian with degraded sensors, and extreme combined failure
