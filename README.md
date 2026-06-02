@@ -24,8 +24,10 @@
 ## Framework Overview
 Describe the two-loop architecture AS a failure propagation measurement
 system, not as a perception project.
-Loop 1 = interface trust estimation
-Loop 2 = behavioral adaptation measurement
+
+Loop 1 = interface trust estimation.
+
+Loop 2 = behavioral adaptation measurement.
 
 ---
 
@@ -129,7 +131,6 @@ Loop 2 = behavioral adaptation measurement
 ![Phase 5 Benchmark](screenshots/phase5/phase5_01_corruption_benchmark.png)
 
 **ODD Coverage Matrix table:** 
-## ODD Coverage Matrix
 
 | Scenario / Corruption | Pedestrian | Vehicle | Cyclist | Static Obstacle |
 | --------------------- | ---------- | ------- | ------- | --------------- |
