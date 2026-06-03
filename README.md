@@ -98,7 +98,7 @@ attenuates rather than amplifies upstream failures.
 - System enters CAUTIOUS mode from LiDAR dropout ≥ 10% — LiDAR loss
   dominates the trust rebalancing even at low dropout rates
 - Camera trust drops 0.58 → 0.41 at maximum glare (zero dropout)
-- CONSERVATIVE mode covers 23% of tested scenario combinations
+- CONSERVATIVE mode never triggered by naive sigmoid mapping — motivating EDL approach
 - Naive sigmoid trust mapping produces weak velocity response (−1.3 km/h)
   — motivating EDL approach
 
