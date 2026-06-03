@@ -79,11 +79,10 @@ attenuates rather than amplifies upstream failures.
 
 **Key findings:**
 - Camera confidence score remains stable under glare (0.939 → 0.939)
-  but MC Dropout uncertainty increases — confirming confidence ≠ uncertainty
+  while attention pattern shifts — confirming confidence ≠ uncertainty
 - CAM_FRONT_LEFT shows highest natural uncertainty (0.001667) —
   oblique viewing angle reduces model confidence
-- Naive uncertainty→trust mapping produces counterintuitive results,
-  motivating Evidential Deep Learning (Phase 4b)
+- Naive uncertainty→trust mapping motivates Evidential Deep Learning (Phase 4b)
 
 ---
 
@@ -94,13 +93,12 @@ attenuates rather than amplifies upstream failures.
 ![Phase 3 Mode Map](screenshots/phase3/phase3_03_mode_map.png)
 
 **Key findings:**
-- Camera trust drops from 0.58 → 0.41 at maximum simulated glare
 - System enters CAUTIOUS mode from LiDAR dropout ≥ 10% — LiDAR loss
-  dominates the trust rebalancing even at low dropout rates
+  dominates trust rebalancing even at low dropout rates
 - Camera trust drops 0.58 → 0.41 at maximum glare (zero dropout)
-- CONSERVATIVE mode never triggered by naive sigmoid mapping — motivating EDL approach
-- Naive sigmoid trust mapping produces weak velocity response (−1.3 km/h)
-  — motivating EDL approach
+- CONSERVATIVE mode never triggered by naive sigmoid — entire 7×7 grid
+  stays CAUTIOUS, motivating EDL approach
+- Naive sigmoid produces weak velocity response (−1.3 km/h)
 
 ---
 
@@ -138,15 +136,15 @@ attenuates rather than amplifies upstream failures.
 ![Trust Comparison](screenshots/phase4b/phase4b_02_trust_comparison.png)
 
 **EDL vs MC DROPOUT COMPARISON:**
-| Glare Intensity | MC Trust | EDL Trust | MC Velocity (km/h) | EDL Velocity (km/h) | Δ Velocity (MC − EDL) (km/h) |
+| Glare Intensity | MC Trust | EDL Trust | MC Velocity (km/h) | EDL Velocity (km/h) | EDL advantage (km/h)         |
 | --------------- | -------- | --------- | ------------------ | ------------------- | ---------------------------- |
-| 0.00            | 0.609    | 0.656     | 45.9               | 50.0                | -4.1                         |
-| 0.15            | 0.596    | 0.656     | 44.6               | 50.0                | -5.4                         |
-| 0.30            | 0.483    | 0.656     | 33.3               | 50.0                | -16.7                        |
-| 0.45            | 0.550    | 0.656     | 40.0               | 50.0                | -10.0                        |
-| 0.60            | 0.586    | 0.657     | 43.6               | 50.0                | -6.4                         |
-| 0.75            | 0.500    | 0.657     | 35.0               | 50.0                | -15.0                        |
-| 0.90            | 0.242    | 0.656     | 30.0               | 50.0                | -20.0                        |
+| 0.00            | 0.609    | 0.656     | 45.9               | 50.0                | 4.1                          |
+| 0.15            | 0.596    | 0.656     | 44.6               | 50.0                | 5.4                          |
+| 0.30            | 0.483    | 0.656     | 33.3               | 50.0                | 16.7                         |
+| 0.45            | 0.550    | 0.656     | 40.0               | 50.0                | 10.0                         |
+| 0.60            | 0.586    | 0.657     | 43.6               | 50.0                | 6.4                          |
+| 0.75            | 0.500    | 0.657     | 35.0               | 50.0                | 15.0                         |
+| 0.90            | 0.242    | 0.656     | 30.0               | 50.0                | 20.0                         |
 
 
 **Key findings:**
@@ -209,7 +207,8 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 
 **Key findings:**
 - 45 injection runs: 5 SOTIF scenarios × 3 injection points × 3 severities
-- IP3 (trust weight interface) peak FPC = 0.65 under combined degradation (T3)
+- IP3 (trust weight interface) peak FPC = 0.65 under T4 (ASIL D —
+  pedestrian + degraded sensors scenario) at high injection severity
 - IP2 (perception output) consistently triggers mode changes but FPC = 0.18
   — interface attenuates rather than amplifies upstream failures
 - 17/45 injection runs caused planning mode changes
