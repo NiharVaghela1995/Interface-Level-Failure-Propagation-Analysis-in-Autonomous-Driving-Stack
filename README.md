@@ -6,6 +6,7 @@
 ![Dataset](https://img.shields.io/badge/dataset-nuScenes%20mini-lightgrey)
 ![Evaluation](https://img.shields.io/badge/evaluation-open--loop-yellow)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
+[![Interactive Demo](https://img.shields.io/badge/demo-interactive%20viz-blue)](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)
 
 ## Research Question
 
