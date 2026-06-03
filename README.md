@@ -21,6 +21,16 @@
 
 ---
 
+## Interactive Visualization
+
+**[Open Phase 3 Sensitivity Matrix — Interactive Explorer](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)**
+
+Explore how camera glare and LiDAR dropout propagate through sensor fusion trust
+into planning behavior — click any of the 49 degradation scenarios to inspect
+the full propagation chain.
+
+---
+
 ## Framework Overview
 
 This project builds a systematic framework for measuring how failures at sensor 
