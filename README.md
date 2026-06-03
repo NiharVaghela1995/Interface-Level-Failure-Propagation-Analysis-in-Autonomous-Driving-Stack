@@ -188,6 +188,22 @@ fog, motion blur, snow, rain — each at 5 severity levels (0.2 → 1.0)
 
 ---
 
+## Phase 6 Results — Interface Injection Framework
+
+![FPC Matrix](screenshots/phase6/phase6_01_fpc_matrix.png)
+![FPC vs Severity](screenshots/phase6/phase6_02_fpc_vs_severity.png)
+![Propagation Chain](screenshots/phase6/phase6_03_propagation_chain.png)
+
+**Key findings:**
+- 45 injection runs: 5 SOTIF scenarios × 3 injection points × 3 severities
+- IP3 (trust weight interface) peak FPC = 0.65 under combined degradation (T3)
+- IP2 (perception output) consistently triggers mode changes but FPC = 0.18
+  — interface attenuates rather than amplifies upstream failures
+- 17/45 injection runs caused planning mode changes
+- IP4 note: FPC = 1.000 by construction (direct output injection)
+
+---
+
 ## Research Roadmap
 
 | V&V Objective | Focus | Status |
