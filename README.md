@@ -5,7 +5,7 @@
 ![Status](https://img.shields.io/badge/status-active%20research-orange)
 ![Dataset](https://img.shields.io/badge/dataset-nuScenes%20mini-lightgrey)
 ![Evaluation](https://img.shields.io/badge/evaluation-open--loop-yellow)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/av-perception-planning-research/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
 
 ## Research Question
 
@@ -23,9 +23,19 @@
 
 ## Framework Overview
 
-Loop 1 = interface trust estimation.
+This project builds a systematic framework for measuring how failures at sensor 
+and algorithmic interfaces propagate through a modular AV stack.
 
-Loop 2 = behavioral adaptation measurement.
+**Two feedback loops:**
+- **Loop 1 (Sensor Trust):** Failure diagnosis → adaptive trust reweighting. 
+  When camera degrades, LiDAR compensates. Camera trust drops 0.58 → 0.41 at max glare.
+- **Loop 2 (Planning Adaptation):** Trust weights feed an uncertainty-aware Frenet 
+  planner, selecting NORMAL / CAUTIOUS / CONSERVATIVE / EMERGENCY regimes.
+
+**Phase 6 Interface Injection:** Failures injected at 3 algorithmic interface 
+points (IP2: perception output, IP3: trust weights, IP4: planning output) across 
+5 SOTIF trigger scenarios. Both IP2 and IP3 show FPC < 1.0 — the framework 
+attenuates rather than amplifies upstream failures.
 
 ---
 
@@ -34,14 +44,14 @@ Loop 2 = behavioral adaptation measurement.
 > **Perception backbone:** All phases use SegFormer-B2 (pretrained on Cityscapes)
 > as the camera perception backbone — a proxy for BEVFusion's camera branch,
 > architecturally equivalent for uncertainty quantification and attention
-> visualization purposes. Phase 6 will replace this with real BEVFusion inference.
+> visualization purposes. Phase 7 will replace this with real BEVFusion inference.
 >
 > **Dataset:** nuScenes mini split — 10 scenes, 404 samples.
 > Full nuScenes val split planned for Phase 6.
 >
 > **Evaluation mode:** All experiments are **open-loop** — sensor inputs are
 > processed and planning outputs computed, but no closed-loop vehicle control
-> is performed. Closed-loop CARLA validation is planned for Phase 6.
+> is performed. Closed-loop CARLA validation is planned for Phase 7.
 >
 > **Sensor degradation:** Camera corruptions are synthetically applied.
 > LiDAR dropout is simulated via random point removal.
@@ -147,13 +157,15 @@ Loop 2 = behavioral adaptation measurement.
 
 
 **Key findings:**
-| Finding             | Observation                                                                                                                                         |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Trust Sensitivity   | MC Dropout trust decreases substantially as glare increases, while EDL trust remains nearly constant.                                               |
-| Velocity Adaptation | MC Dropout triggers progressively lower planned velocities under severe glare conditions.                                                           |
-| EDL Behavior        | EDL maintains maximum velocity (50 km/h) across all glare levels, indicating little or no uncertainty-driven adaptation.                            |
-| Largest Difference  | At glare = 0.90, MC velocity is 30 km/h while EDL remains at 50 km/h (20 km/h difference).                                                          |
-| Safety Implication  | MC Dropout appears more responsive to perception degradation, whereas the current EDL implementation may be overconfident under adverse conditions. |
+- EDL separates aleatoric from epistemic uncertainty — MC Dropout cannot
+- Current EDL implementation shows near-constant trust (~0.656) across
+  glare levels, indicating the evidential head requires task-specific
+  fine-tuning to respond to distribution shift
+- MC Dropout shows higher sensitivity to glare (trust range 0.242–0.609)
+  — demonstrating the value of uncertainty-aware planning even with a
+  simpler method
+- This motivates fine-tuning the EDL head on degraded driving data
+  as a Phase 6 objective
 
 ---
 
@@ -165,14 +177,16 @@ Loop 2 = behavioral adaptation measurement.
 
 | Scenario / Corruption | Pedestrian | Vehicle | Cyclist | Static Obstacle |
 | --------------------- | ---------- | ------- | ------- | --------------- |
-| Clean                 | ✓          | ✓       | ✓       | ✓               |
-| Glare                 | ✓          | ✓       | ✓       | ✓               |
-| Brightness            | ✓          | ✓       | ✓       | ✓               |
-| Darkness              | ✓          | ✓       | ✓       | ✓               |
-| Fog                   | ✓          | ✓       | ✓       | ✓               |
-| Motion Blur           | ✓          | ✓       | ✓       | ✓               |
-| Snow                  | ✓          | ✓       | ✓       | ✓               |
-| Rain                  | ✓          | ✓       | ✓       | ✓               |
+| Clean                 | ✓          | ✓       | -       | ✓               |
+| Glare                 | ✓          | ✓       | -       | ✓               |
+| Brightness            | ✓          | ✓       | -       | ✓               |
+| Darkness              | ✓          | ✓       | -       | ✓               |
+| Fog                   | ✓          | ✓       | -       | ✓               |
+| Motion Blur           | ✓          | ✓       | -       | ✓               |
+| Snow                  | ✓          | ✓       | -       | ✓               |
+| Rain                  | ✓          | ✓       | -       | ✓               |
+
+nuScenes mini (Singapore urban) — cyclist scenarios not present in sampled scenes
 
 **Legend:** ✓ = Tested, - = Not Tested
 
@@ -214,7 +228,8 @@ fog, motion blur, snow, rain — each at 5 severity levels (0.2 → 1.0)
 | Phase 4a | SOTIF & ISO 26262 — HARA table, risk boundaries | ✅ Complete |
 | Phase 4b | Evidential Deep Learning — aleatoric vs epistemic | ✅ Complete |
 | Phase 5 | Open-loop robustness benchmark — 8 corruptions × 5 severities | ✅ Complete |
-| Phase 6 | Real BEVFusion inference + closed-loop CARLA validation | 📋 Planned |
+| Phase 6 | Interface injection framework — FPC analysis across T1–T5 | ✅ Complete |
+| Phase 7 | Real BEVFusion inference + closed-loop CARLA validation | 📋 Planned |
 
 ---
 
