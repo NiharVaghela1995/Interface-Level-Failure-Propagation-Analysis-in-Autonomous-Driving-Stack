@@ -227,6 +227,12 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 
 ---
 
+## Writing
+
+- [Why modular AV stacks can't tilt their head](https://medium.com/@niharvaghela/why-modular-av-stacks-cant-tilt-their-head-17fa40497c13) — the systems thinking behind this project: technical choices, reasoning, honest limitations
+
+---
+
 ## Research Roadmap
 
 | V&V Objective | Focus | Status |
