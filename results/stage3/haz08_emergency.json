@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-06-06T16:00:00.000000",
+  "scenario": "HAZ-08_emergency_mrc",
+  "sotif_trigger": "T5_extreme_combined_failure",
+  "asil": "B",
+  "safety_goals": ["SG3_conservative_regime", "SG5_mrc_trigger"],
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "environment": {
+    "simulator": "CARLA 0.9.15",
+    "gpu": "NVIDIA RTX 4090",
+    "degradation": "combined glare + LiDAR dropout at extreme severities",
+    "pedestrian_distance_m": 25,
+    "n_steps": 120
+  },
+  "key_findings": {
+    "sg3_conservative_verified": true,
+    "sg3_trigger_condition": "glare=0.50 + lidar_dropout=0.50, combined config",
+    "sg3_ttc_improvement": "0.224s -> 8.51s",
+    "sg5_emergency_verified": true,
+    "sg5_trigger_condition": "glare=0.90 + lidar_dropout=0.80, combined config",
+    "loop2_alone_insufficient_at_extreme": true,
+    "loop2_only_max_mode": "CAUTIOUS — cannot reach CONSERVATIVE alone",
+    "combined_required_for_conservative_emergency": true,
+    "finding": "Combined loops required for CONSERVATIVE/EMERGENCY — Loop 1 provides trust signal, Loop 2 acts on it. Neither alone is sufficient at extreme degradation."
+  },
+  "results": [
+    {
+      "glare": 0.0,
+      "lidar_dropout": 0.0,
+      "configs": {
+        "baseline":   {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop1_only": {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop2_only": {"collision": true,  "min_ttc": 0.393, "final_mode": "CAUTIOUS",     "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "combined":   {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0}
+      }
+    },
+    {
+      "glare": 0.5,
+      "lidar_dropout": 0.5,
+      "configs": {
+        "baseline":   {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop1_only": {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop2_only": {"collision": true,  "min_ttc": 0.393, "final_mode": "CAUTIOUS",     "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 8.51,  "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "emergency_triggered": false, "fpc": 75.82}
+      }
+    },
+    {
+      "glare": 0.75,
+      "lidar_dropout": 0.65,
+      "configs": {
+        "baseline":   {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop1_only": {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop2_only": {"collision": true,  "min_ttc": 0.393, "final_mode": "CAUTIOUS",     "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 8.51,  "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "emergency_triggered": false, "fpc": 49.89}
+      }
+    },
+    {
+      "glare": 0.9,
+      "lidar_dropout": 0.8,
+      "configs": {
+        "baseline":   {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop1_only": {"collision": true,  "min_ttc": 0.224, "final_mode": "NORMAL",       "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "loop2_only": {"collision": true,  "min_ttc": 0.393, "final_mode": "CAUTIOUS",     "conservative_triggered": false, "emergency_triggered": false, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 8.51,  "final_mode": "EMERGENCY",    "conservative_triggered": false, "emergency_triggered": true,  "fpc": 37.41}
+      }
+    }
+  ],
+  "safety_goal_verdicts": {
+    "SG3_conservative_regime": "VERIFIED — triggered at glare=0.50 + lidar_dropout=0.50 with combined config",
+    "SG5_mrc_trigger": "VERIFIED — EMERGENCY triggered at glare=0.90 + lidar_dropout=0.80 with combined config",
+    "key_condition": "Both SG3 and SG5 require combined loops — Loop 2 alone cannot trigger CONSERVATIVE or EMERGENCY"
+  }
+}

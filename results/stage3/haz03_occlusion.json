@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-06-06T16:30:00.000000",
+  "scenario": "HAZ-03_occlusion",
+  "sotif_trigger": "T4_pedestrian_degraded_sensors",
+  "asil": "D",
+  "safety_goals": ["SG2_ttc_scaling", "SG4_affordance_override"],
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "environment": {
+    "simulator": "CARLA 0.9.15",
+    "gpu": "NVIDIA RTX 4090",
+    "degradation": "glare applied, pedestrian occluded behind parked vehicle",
+    "pedestrian_emerges_at_step": 40,
+    "n_steps": 150
+  },
+  "key_findings": {
+    "baseline_collision_rate": "0% — occlusion gives more reaction time than HAZ-01",
+    "baseline_min_ttc": 0.499,
+    "baseline_detection_distance_m": 17.56,
+    "loop2_min_ttc": 0.835,
+    "loop2_improvement": "1.7x",
+    "combined_sev075_ttc": 7.47,
+    "combined_sev075_mode": "CONSERVATIVE",
+    "combined_sev075_detection_distance_m": 22.62,
+    "loop1_detection_benefit": true,
+    "loop1_finding": "First positive Loop 1 finding — combined loops increase detection distance 17.56m -> 22.62m at high severity",
+    "ttc_threshold_met": "combined sev=0.75 only (7.47s >> 1.5s threshold)",
+    "note": "HAZ-03 is the most nuanced scenario — Loop 1 shows benefit when combined with Loop 2 at high severity"
+  },
+  "results": [
+    {
+      "severity": 0.0,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 0.0}
+      }
+    },
+    {
+      "severity": 0.25,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 2.6934},
+        "combined":   {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 2.6934}
+      }
+    },
+    {
+      "severity": 0.5,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 1.3467},
+        "combined":   {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 1.3467}
+      }
+    },
+    {
+      "severity": 0.75,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.499, "final_mode": "NORMAL",       "detection_distance": 17.56, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.835, "final_mode": "CAUTIOUS",     "detection_distance": 19.96, "fpc": 0.8978},
+        "combined":   {"collision": false, "min_ttc": 7.47,  "final_mode": "CONSERVATIVE", "detection_distance": 22.62, "fpc": 18.6266}
+      }
+    }
+  ],
+  "safety_goal_verdicts": {
+    "SG2_ttc_scaling": "VERIFIED for combined sev=0.75 (7.47s >> 1.5s). PARTIAL for other configs (0.835s < 1.5s)",
+    "SG4_affordance_override": "PARTIAL — pedestrian avoided, detection distance improves with combined loops, no explicit affordance classification layer",
+    "loop1_positive_finding": "First scenario where Loop 1 contributes — combined detection distance 17.56m -> 22.62m at sev=0.75"
+  }
+}
