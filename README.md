@@ -4,7 +4,7 @@
 ![Domain](https://img.shields.io/badge/domain-AV%20Safety%20%26%20Validation-green)
 ![Status](https://img.shields.io/badge/status-active%20research-orange)
 ![Dataset](https://img.shields.io/badge/dataset-nuScenes%20mini-lightgrey)
-![Evaluation](https://img.shields.io/badge/evaluation-closed--loop%20%2B%20open--loop-brightgreen)
+![Evaluation](https://img.shields.io/badge/evaluation-open--loop-yellow)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
 [![Interactive Demo](https://img.shields.io/badge/demo-interactive%20viz-blue)](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)
 
@@ -60,9 +60,9 @@ attenuates rather than amplifies upstream failures.
 > **Dataset:** nuScenes mini split — 10 scenes, 404 samples.
 > Full nuScenes val split planned for Phase 6.
 >
-> **Evaluation mode:** Phases 1–6 open-loop (nuScenes mini). Stages 2–4
-> closed-loop in CARLA 0.9.15 (Town10HD_Opt, RTX 4090) — 5 scenarios,
-> 112 closed-loop runs, 3/5 safety goals verified.
+> **Evaluation mode:** All experiments are **open-loop** — sensor inputs are
+> processed and planning outputs computed, but no closed-loop vehicle control
+> is performed. Closed-loop CARLA validation is planned for Phase 7.
 >
 > **Sensor degradation:** Camera corruptions are synthetically applied.
 > LiDAR dropout is simulated via random point removal.
@@ -233,45 +233,6 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 
 ---
 
-## Closed-Loop V&V Results — 112 Runs, 5 Scenarios
-
-**Simulator:** CARLA 0.9.15 · Town10HD_Opt · RTX 4090 · synchronous 20 FPS
-
-### Cross-Scenario Campaign Summary
-
-| Scenario | SOTIF | ASIL | Runs | Baseline TTC | Loop 2 TTC | Improvement | Collision Prevented |
-|----------|-------|------|------|-------------|-----------|-------------|---------------------|
-| HAZ-01: Pedestrian + glare | T1, T4 | D | 48 | 0.205s | 2.128s | **10.4×** | ✅ Yes (100%→0%) |
-| HAZ-02: Cut-in + fog | T3 | C | 16 | 0.297s | 0.805s | 2.7× | — |
-| HAZ-03: Occluded pedestrian | T4 | D | 16 | 0.499s | 0.835s | 1.7× | — |
-| HAZ-04: Fog + pedestrian | T3, T4 | C/D | 16 | 0.388s | 0.702s | 1.8× | — |
-| HAZ-08: EMERGENCY / MRC | T5 | B | 16 | 0.224s | 0.393s | 1.8× | ✅ Yes (combined only) |
-
-### Four-Configuration Mitigation Results
-
-| Configuration | Pattern across 112 runs |
-|---------------|------------------------|
-| Baseline | Collides in HAZ-01 and HAZ-08 (ASIL D + B scenarios) |
-| Loop 1 only | Identical to baseline — zero standalone safety benefit |
-| Loop 2 only | Prevents collision in moderate scenarios, fails at extreme degradation |
-| Combined | Prevents collision across all scenarios including EMERGENCY |
-
-### Safety Goal Verdicts
-
-| Safety Goal | ASIL | Verdict | Key Evidence |
-|-------------|------|---------|-------------|
-| SG1: Confidence threshold | B | ⚠️ PARTIAL | Loop 1 non-independent — 112 runs |
-| SG2: TTC scaling | C | ✅ **VERIFIED** | HAZ-01: 10.4× TTC · HAZ-03 combined: 7.47s |
-| SG3: CONSERVATIVE regime | C | ✅ **VERIFIED** | HAZ-08: triggered at glare=0.50 + lidar=0.50 |
-| SG4: Affordance override | D | ⚠️ PARTIAL | HAZ-03: detection distance +29% |
-| SG5: MRC / EMERGENCY trigger | B | ✅ **VERIFIED** | HAZ-08: triggered at glare=0.90 + lidar=0.80 |
-
-Full V&V report: [`results/stage4/vnv_report.md`](results/stage4/vnv_report.md)  
-GSN safety case: [`results/stage4/safety_case.md`](results/stage4/safety_case.md)  
-Coverage tracker: [`docs/coverage_tracker.md`](docs/coverage_tracker.md)
-
----
-
 ## Research Roadmap
 
 | V&V Objective | Focus | Status |
@@ -283,10 +244,7 @@ Coverage tracker: [`docs/coverage_tracker.md`](docs/coverage_tracker.md)
 | Phase 4b | Evidential Deep Learning — aleatoric vs epistemic | ✅ Complete |
 | Phase 5 | Open-loop robustness benchmark — 8 corruptions × 5 severities | ✅ Complete |
 | Phase 6 | Interface injection framework — FPC analysis across T1–T5 | ✅ Complete |
-| Stage 2 | CARLA closed-loop rig — ego + CAM_FRONT + LIDAR_TOP operational | ✅ Complete |
-| Stage 3 | 5-scenario campaign — HAZ-01/02/03/04/08, 112 runs | ✅ Complete |
-| Stage 4 | V&V report, GSN safety case, trade-off ledger, 3/5 SGs verified | ✅ Complete |
-| Phase 7 | Real BEVFusion + Autoware integration + multi-map campaign | 📋 Planned |
+| Phase 7 | Real BEVFusion inference + closed-loop CARLA validation | 📋 Planned |
 
 ---
 
