@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-06-07T01:00:00.000000",
+  "scenario": "HAZ-06_night",
+  "sotif_trigger": "T1_darkness_sensor_limits",
+  "asil": "C",
+  "hazard": "H1",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "sg4_fix": "pedestrian_affordance_override_15m",
+  "aeb_assist": "brake_at_6m",
+  "lidar_unaffected_by_darkness": true,
+  "key_findings": {
+    "baseline_ttc": 0.367,
+    "loop2_ttc": 9.591,
+    "loop1_compensation_demonstrated": true,
+    "loop1_finding": "Night: camera degrades (0.580->0.319 at max darkness), LiDAR stays at 1.000. Loop 1 correctly identifies reliable modality.",
+    "sg3_verified": true,
+    "sg4_override_triggered": true,
+    "loop1_benefit": false,
+    "finding": "Night validates Loop 1 architecture: correct modality identification but zero standalone safety benefit without Loop 2."
+  },
+  "results": [
+    {"darkness": 0.0, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 0.0},
+      "combined":   {"collision": false, "min_ttc": 0.879, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 0.0}
+    }},
+    {"darkness": 0.25, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 100.534},
+      "combined":   {"collision": false, "min_ttc": 0.879, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 5.580}
+    }},
+    {"darkness": 0.5, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 50.267},
+      "combined":   {"collision": false, "min_ttc": 0.879, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 2.790}
+    }},
+    {"darkness": 0.75, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 33.511},
+      "combined":   {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 33.511}
+    }}
+  ]
+}

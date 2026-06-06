@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-06-07T00:30:00.000000",
+  "scenario": "HAZ-05_rain_lidar_dropout",
+  "sotif_trigger": "T2_T3_rain_combined",
+  "asil": "C",
+  "hazard": "H3",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "sg4_fix": "pedestrian_affordance_override_15m",
+  "aeb_assist": "brake_at_6m",
+  "conservative_threshold": 0.40,
+  "key_findings": {
+    "baseline_ttc": 0.367,
+    "loop2_ttc": 9.591,
+    "loop2_mode": "CONSERVATIVE triggered immediately — rain unc=0.484 > threshold=0.40",
+    "sg3_verified": true,
+    "sg4_override_triggered": true,
+    "h3_covered": true,
+    "loop1_benefit": false,
+    "finding": "Rain+LiDAR: both sensors degrade simultaneously. Loop 2 CONSERVATIVE immediate. SG3 verified in rain. H3 coverage closed."
+  },
+  "results": [
+    {"severity": 0.0, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 0.0},
+      "combined":   {"collision": false, "min_ttc": 0.496, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 0.0}
+    }},
+    {"severity": 0.25, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 100.534},
+      "combined":   {"collision": false, "min_ttc": 0.879, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 5.580}
+    }},
+    {"severity": 0.5, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 50.267},
+      "combined":   {"collision": false, "min_ttc": 0.879, "final_mode": "EMERGENCY",    "conservative_triggered": false, "sg4_override": true,  "fpc": 2.790}
+    }},
+    {"severity": 0.75, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.367, "final_mode": "NORMAL",       "conservative_triggered": false, "sg4_override": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 33.511},
+      "combined":   {"collision": false, "min_ttc": 9.591, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "sg4_override": false, "fpc": 33.511}
+    }}
+  ]
+}

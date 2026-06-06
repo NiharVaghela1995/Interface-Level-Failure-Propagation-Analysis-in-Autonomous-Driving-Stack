@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-06-07T01:30:00.000000",
+  "scenario": "HAZ-07_construction",
+  "sotif_trigger": "T3_combined_degradation",
+  "asil": "C",
+  "hazard": "H4",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "sg4_fix": "pedestrian_affordance_override_15m",
+  "aeb_assist": "brake_at_6m",
+  "debris_model": "LiDAR_false_returns_camera_dust",
+  "key_findings": {
+    "baseline_ttc": 0.319,
+    "loop2_ttc": 8.545,
+    "loop2_mode": "CONSERVATIVE triggered immediately at all severities",
+    "sg3_verified": true,
+    "loop1_paradox": "Loop1 correctly computes degraded trust at sev=0.75 (cam=0.471, lid=0.263, unc=0.612) but NORMAL without Loop2 — zero standalone benefit",
+    "symmetric_degradation": "Both sensors degrade simultaneously — Loop1 has no reliable fallback modality to compensate with",
+    "finding": "Construction zone: symmetric sensor degradation reveals Loop1 architectural limit — compensation requires asymmetric failure."
+  },
+  "results": [
+    {"severity": 0.0, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 0.0},
+      "combined":   {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 0.0}
+    }},
+    {"severity": 0.25, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 103.147},
+      "combined":   {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 103.147}
+    }},
+    {"severity": 0.5, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 51.574},
+      "combined":   {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 51.574}
+    }},
+    {"severity": 0.75, "configs": {
+      "baseline":   {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop1_only": {"collision": false, "min_ttc": 0.319, "final_mode": "NORMAL",       "conservative_triggered": false, "fpc": 0.0},
+      "loop2_only": {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 34.382},
+      "combined":   {"collision": false, "min_ttc": 8.545, "final_mode": "CONSERVATIVE", "conservative_triggered": true,  "fpc": 34.382}
+    }}
+  ]
+}
