@@ -1,132 +1,88 @@
-# GSN Safety Case — HAZ-01
+# GSN Safety Case — Multi-Scenario Closed-Loop Evidence
 ## Interface-Level Failure Propagation Analysis in Autonomous Driving Stacks
 
-**Version:** 1.0 (Stage 4 — closed-loop evidence)
-**Generated:** 2026-06-06 17:18
-**Standard:** ISO 26262 + ISO 21448 (SOTIF)
+**Version:** 2.0 (updated after HAZ-02 and HAZ-04 campaigns)
+**Generated:** 2026-06-06 20:00
+**Total evidence runs:** 80
 
 ---
 
 ## Top Safety Claim
 
 **G1:** The uncertainty-aware perception-planning stack maintains acceptable
-safety under the defined sensor-degradation ODD for HAZ-01 (pedestrian
-approach, glare degradation, Town10HD urban intersection).
+safety under the defined sensor-degradation ODD across pedestrian approach,
+cut-in, and fog scenarios in Town10HD urban environment.
 
 ---
 
 ## Evidence Structure
 
-### G1 → Strategy: Argument over mitigation configurations
+### G1.1: Loop 2 is a necessary mitigation — verified across 3 scenarios
 
-**S1:** Safety is argued by demonstrating that the combined mitigation
-(Loop 1 + Loop 2) prevents collision across all tested injection points
-and severities, with quantified TTC improvement as the safety metric.
+**E1.1a (HAZ-01):** Collision rate 100%→0%, TTC 0.205s→2.128s (10.4×)
+**E1.1b (HAZ-02):** TTC 0.297s→0.805s (2.7×), no collision
+**E1.1c (HAZ-04):** TTC 0.388s→0.702s (1.8×), no collision
+**Conclusion:** Loop 2 consistently improves safety — robust across scenario types
 
----
+### G1.2: Loop 1 alone is architecturally insufficient — confirmed across 80 runs
 
-### Sub-claim G1.1: Baseline system is unsafe without mitigation
+**E1.2:** Loop 1 only = baseline in every run across all 3 scenarios (80 runs)
+**Conclusion:** Trust reweighting requires planning adaptation. Cannot be claimed as independent safety layer.
 
-**Evidence E1.1:**
-- Baseline collision rate: 100% (12/12 pedestrian runs)
-- Baseline min TTC: 0.205s (below 1.5s threshold)
-- Source: `results/stage3/haz01_v2.json`, all IP × severity × baseline rows
+### G1.3: SG2 TTC scaling VERIFIED in closed-loop (HAZ-01)
 
-**Conclusion:** The unmitigated stack collides with the pedestrian in every
-HAZ-01 run. This establishes the need for the mitigation loops.
+**E1.3:** HAZ-01 Loop 2 TTC = 2.128s ≥ 1.5s threshold
+**Conclusion:** SG2 verified for ASIL D pedestrian scenario
 
----
+### G1.4: SG2 PARTIAL for HAZ-02 and HAZ-04
 
-### Sub-claim G1.2: Loop 2 is a necessary and sufficient mitigation for HAZ-01
+**E1.4:** HAZ-02 Loop2 TTC=0.805s, HAZ-04 Loop2 TTC=0.702s — both below 1.5s
+**Conclusion:** CAUTIOUS mode insufficient — CONSERVATIVE needed. Threshold tuning required (NR-06).
 
-**Evidence E1.2:**
-- Loop 2 collision rate: 0% across all IP × severity combinations
-  where uncertainty threshold is crossed
-- Loop 2 min TTC: 2.128s (above 1.5s threshold)
-- TTC improvement factor: 10.4x
-- Source: `results/stage3/haz01_v2.json`, loop2_only rows
+### G1.5: IP3 fragility — residual risk at trust weight interface
 
-**Conclusion:** Loop 2 (uncertainty-aware planning) is sufficient to prevent
-collision in HAZ-01. Activation of CAUTIOUS mode (throttle 0.6 → 0.4) provides
-adequate TTC margin.
+**E1.5:** HAZ-01 IP3 sev=0.25 combined: collision=True
+**Conclusion:** Low-severity trust corruption bypasses combined mitigation. Residual risk RR-01.
 
 ---
 
-### Sub-claim G1.3: Loop 1 alone is insufficient — two-loop architecture required
+## Residual Risks (updated)
 
-**Evidence E1.3:**
-- Loop 1 only collision rate: 100% (identical to baseline)
-- Trust reweighting without planning adaptation provides zero safety benefit
-- Source: `results/stage3/haz01_v2.json`, loop1_only rows (all collision=True)
-
-**Conclusion:** The adaptive trust mechanism (Loop 1) is necessary for correct
-uncertainty signal propagation but must be paired with Loop 2 to affect behavior.
-
----
-
-### Sub-claim G1.4: IP3 trust weight interface is the most fragile point
-
-**Evidence E1.4:**
-- IP3 sev=0.25, combined config: collision=True
-- All other combined configs: collision=False
-- Trust weight injection at low severity (0.25) can bypass the combined mitigation
-- Source: `results/stage3/haz01_v2.json`, IP3 sev=0.25 combined row
-
-**Conclusion:** The trust weight interface (IP3) represents a residual risk.
-Low-severity corruption at this boundary can degrade the combined mitigation
-to baseline behavior.
+| ID | Risk | ASIL | Closure |
+|----|------|------|---------|
+| RR-01 | IP3 trust corruption sev=0.25 bypasses combined | C | NR-02 integrity check |
+| RR-02 | Loop 1 non-independence | B | Architecture documented |
+| RR-03 | Speed reduction trade-off in dense traffic | B | NR-01 rear monitor |
+| RR-04 | HAZ-02/04 TTC below 1.5s threshold with Loop 2 | C | NR-06 threshold tuning |
+| RR-05 | CONSERVATIVE regime never triggered | C | Higher severity campaign |
+| RR-06 | SG3/SG5 not verified | B/C | HAZ-08 extreme scenario |
+| RR-07 | Fog over-conservatism at low severity | B | NR-05 fog floor |
+| RR-08 | Single map coverage | B | Multi-map campaign |
+| RR-09 | Sim-to-real gap | D | Real-world validation debt |
 
 ---
 
-## Residual Risks
+## Safety Goal Verdicts (updated)
 
-| ID | Risk | Severity | Closure Path |
-|----|------|----------|--------------|
-| RR-01 | IP3 trust corruption at sev=0.25 breaks combined mitigation | ASIL C | NR-02: trust integrity check |
-| RR-02 | Loop 1 provides no standalone safety benefit | ASIL B | Architecture documented — two loops required together |
-| RR-03 | Speed reduction trade-off not validated in dense traffic | ASIL B | NR-01: rear-proximity monitor |
-| RR-04 | Single scenario coverage — HAZ-01 only | ASIL C | Stage 3 campaign expansion needed |
-| RR-05 | Single map — Town10HD only | ASIL B | Multi-map campaign pending |
-| RR-06 | EDL epistemic calibration gap | ASIL C | Task-specific fine-tuning (Phase 7) |
-| RR-07 | Sim-to-real gap | ASIL D | Real-world validation debt |
+| SG | ASIL | Verdict | Evidence |
+|----|------|---------|----------|
+| SG1: Confidence threshold | B | ⚠️ PARTIAL | Loop 1 non-independent across 80 runs |
+| SG2: TTC scaling | C | ✅ VERIFIED (HAZ-01) / ⚠️ PARTIAL (HAZ-02/04) | 10.4× TTC, 0% collision HAZ-01 |
+| SG3: CONSERVATIVE regime | C | ⚠️ NEVER TRIGGERED | Threshold never reached in 80 runs |
+| SG4: Affordance override | D | ⚠️ PARTIAL | Pedestrian avoided, no explicit layer |
+| SG5: MRC trigger | B | ❌ NOT TESTED | Requires extreme combined failure |
 
 ---
 
-## Safety Goal Verdicts
+## New Requirements (fed back to Specify)
 
-| Safety Goal | ASIL | Closed-Loop Status | Evidence |
-|-------------|------|-------------------|----------|
-| SG1: Confidence threshold | B | PARTIAL | Loop 2 compensates — Loop 1 signal not independently effective |
-| SG2: TTC scaling | C | VERIFIED | 10.4x TTC improvement, 0% collision rate |
-| SG3: CONSERVATIVE regime | C | PARTIAL | CAUTIOUS triggered; CONSERVATIVE not reached in HAZ-01 |
-| SG4: Affordance override | D | PARTIAL | Pedestrian avoided but no explicit affordance classification |
-| SG5: MRC trigger | B | NOT TESTED | Requires extreme combined failure scenario |
-
----
-
-## New Requirements (feed back to Specify)
-
-| ID | Requirement | Source Finding | Priority |
-|----|-------------|----------------|----------|
-| NR-01 | Rear-proximity monitor shall inhibit CAUTIOUS speed reduction when following vehicle within 5m | Trade-off: Loop 2 speed reduction | ASIL B |
-| NR-02 | IP3 trust weight integrity check — system shall detect and flag trust inputs deviating >0.3 from expected range | Finding 3: IP3 fragility | ASIL C |
-| NR-03 | Minimum uncertainty floor of 0.20 to prevent Loop 2 remaining in NORMAL at zero IP2 injection | Finding 4: IP2 zero-severity | ASIL B |
-| NR-04 | Campaign shall be extended to cut-in, occlusion, fog, rain, and night scenarios | Coverage gap | ASIL C |
+NR-01: Rear-proximity monitor
+NR-02: IP3 trust integrity check
+NR-03: Uncertainty floor for IP2
+NR-04: Campaign expansion to 8 scenarios
+NR-05: Fog uncertainty floor
+NR-06: CONSERVATIVE threshold tuning
 
 ---
 
-## Validation Debt
-
-| Item | Description | Closes |
-|------|-------------|--------|
-| VD-01 | Real-world perception backbone (BEVFusion replacing SegFormer proxy) | Phase 7 |
-| VD-02 | Closed-loop validation on real nuScenes full split | Phase 7 |
-| VD-03 | Multi-scenario campaign (cut-in, occlusion, weather) | Stage 3 expansion |
-| VD-04 | EDL epistemic head fine-tuning on degraded driving data | Phase 7 |
-| VD-05 | Sim-to-real transfer validation | Post-thesis |
-
----
-
-*Safety case evidence: `results/stage3/haz01_v2.json`*
-*V&V report: `results/stage4/vnv_report.md`*
-*Campaign code: `scripts/stage2_haz01_injection.py`*
+*Evidence: results/stage3/ | V&V report: results/stage4/vnv_report.md*
