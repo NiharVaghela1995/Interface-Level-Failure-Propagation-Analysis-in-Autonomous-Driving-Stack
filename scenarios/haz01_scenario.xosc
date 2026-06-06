@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  HAZ-01: Ego approaching pedestrian under sensor degradation
+  =============================================================
+  Scenario:   Ego vehicle approaches stationary pedestrian (30m ahead)
+              under configurable camera glare and LiDAR dropout.
+  Hazard:     H2 (ASIL D) — missed pedestrian under camera degradation
+  Safety goal: SG2 — TTC shall scale with sensor uncertainty
+  SOTIF:      T1 (direct sunlight/glare), T4 (pedestrian + degraded sensors)
+  Standard:   ASAM OpenSCENARIO 1.0
+  
+  Parameters:
+    GlareIntensity     [0.0 - 0.9]   Camera degradation severity
+    LidarDropout       [0.0 - 0.8]   LiDAR point dropout fraction
+    PedestrianDistance [20 - 40]     Initial distance ego to pedestrian (m)
+    EgoInitSpeed       [0.0 - 14.0]  Initial ego velocity (m/s)
+    MitigationConfig   [0 - 3]       0=baseline, 1=loop1, 2=loop2, 3=combined
+-->
+<OpenSCENARIO>
+
+  <FileHeader
+    description="HAZ-01: Pedestrian approach under sensor degradation — SOTIF T1/T4"
+    author="Nihar Vaghela — Interface-Level Failure Propagation Analysis"
+    revMajor="1"
+    revMinor="0"
+    date="2026-06-06T00:00:00"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       PARAMETER DECLARATIONS
+       Change these to sweep the scenario space.
+       ═══════════════════════════════════════════════════════════════ -->
+  <ParameterDeclarations>
+    <!-- Sensor degradation -->
+    <ParameterDeclaration
+      name="GlareIntensity"
+      parameterType="double"
+      value="0.45"/>
+    <ParameterDeclaration
+      name="LidarDropout"
+      parameterType="double"
+      value="0.35"/>
+
+    <!-- Scene geometry -->
+    <ParameterDeclaration
+      name="PedestrianDistance"
+      parameterType="double"
+      value="30.0"/>
+    <ParameterDeclaration
+      name="EgoInitSpeed"
+      parameterType="double"
+      value="0.0"/>
+
+    <!-- Mitigation configuration
+         0 = baseline (no loops)
+         1 = loop1 only (adaptive trust)
+         2 = loop2 only (uncertainty planner)
+         3 = combined (both loops) -->
+    <ParameterDeclaration
+      name="MitigationConfig"
+      parameterType="integer"
+      value="3"/>
+
+    <!-- Acceptance thresholds -->
+    <ParameterDeclaration
+      name="MinTTC"
+      parameterType="double"
+      value="1.5"/>
+    <ParameterDeclaration
+      name="MinClearance"
+      parameterType="double"
+      value="1.0"/>
+  </ParameterDeclarations>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CATALOGUE REFERENCES
+       ═══════════════════════════════════════════════════════════════ -->
+  <CatalogLocations>
+    <VehicleCatalog>
+      <Directory path="Catalogs/Vehicles"/>
+    </VehicleCatalog>
+    <PedestrianCatalog>
+      <Directory path="Catalogs/Pedestrians"/>
+    </PedestrianCatalog>
+  </CatalogLocations>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ROAD NETWORK
+       Town10HD_Opt — urban intersection ODD
+       ═══════════════════════════════════════════════════════════════ -->
+  <RoadNetwork>
+    <LogicFile filepath="Town10HD_Opt"/>
+    <SceneGraphFile filepath="Town10HD_Opt"/>
+  </RoadNetwork>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ENTITIES
+       ═══════════════════════════════════════════════════════════════ -->
+  <Entities>
+
+    <!-- Ego vehicle -->
+    <ScenarioObject name="Ego">
+      <Vehicle name="vehicle.tesla.model3" vehicleCategory="car">
+        <ParameterDeclarations/>
+        <Performance maxSpeed="14.0" maxAcceleration="3.0" maxDeceleration="6.0"/>
+        <BoundingBox>
+          <Center x="1.5" y="0.0" z="0.75"/>
+          <Dimensions width="2.1" length="4.5" height="1.5"/>
+        </BoundingBox>
+        <Axles>
+          <FrontAxle maxSteering="0.5" wheelDiameter="0.6"
+                     trackWidth="1.8" positionX="3.1" positionZ="0.3"/>
+          <RearAxle maxSteering="0.0" wheelDiameter="0.6"
+                    trackWidth="1.8" positionX="0.0" positionZ="0.3"/>
+        </Axles>
+        <Properties>
+          <Property name="type" value="ego"/>
+          <Property name="mitigation_config" value="$MitigationConfig"/>
+          <Property name="glare_intensity" value="$GlareIntensity"/>
+          <Property name="lidar_dropout" value="$LidarDropout"/>
+        </Properties>
+      </Vehicle>
+    </ScenarioObject>
+
+    <!-- Pedestrian — stationary, crossing path of ego -->
+    <ScenarioObject name="Pedestrian01">
+      <Pedestrian name="walker.pedestrian.0001"
+                  pedestrianCategory="pedestrian"
+                  mass="70.0">
+        <ParameterDeclarations/>
+        <BoundingBox>
+          <Center x="0.0" y="0.0" z="0.9"/>
+          <Dimensions width="0.5" length="0.35" height="1.8"/>
+        </BoundingBox>
+        <Properties>
+          <Property name="type" value="pedestrian"/>
+        </Properties>
+      </Pedestrian>
+    </ScenarioObject>
+
+  </Entities>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       STORYBOARD
+       ═══════════════════════════════════════════════════════════════ -->
+  <Storyboard>
+
+    <!-- ── INIT ─────────────────────────────────────────────────── -->
+    <Init>
+      <Actions>
+
+        <!-- World: set environment (glare = sunny, high luminance) -->
+        <GlobalAction>
+          <EnvironmentAction>
+            <Environment name="GlareEnvironment">
+              <TimeOfDay animation="false" dateTime="2026-06-06T12:00:00"/>
+              <Weather cloudState="free">
+                <Sun intensity="1.0" azimuth="0.0" elevation="1.4"/>
+                <Fog visualRange="100000.0"/>
+                <Precipitation precipitationType="dry" intensity="0.0"/>
+              </Weather>
+              <RoadCondition frictionScaleFactor="1.0"/>
+            </Environment>
+          </EnvironmentAction>
+        </GlobalAction>
+
+        <!-- Ego: spawn at intersection approach -->
+        <Private entityRef="Ego">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="-64.6" y="24.5" z="0.6" h="0.0"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionDynamics dynamicsShape="step"
+                                     value="0.0"
+                                     dynamicsDimension="time"/>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="$EgoInitSpeed"/>
+                </SpeedActionTarget>
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+        </Private>
+
+        <!-- Pedestrian: spawn PedestrianDistance ahead of ego -->
+        <Private entityRef="Pedestrian01">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <RelativeObjectPosition entityRef="Ego"
+                                        dx="$PedestrianDistance"
+                                        dy="0.0"
+                                        dz="0.4"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionDynamics dynamicsShape="step"
+                                     value="0.0"
+                                     dynamicsDimension="time"/>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="0.0"/>
+                </SpeedActionTarget>
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+        </Private>
+
+      </Actions>
+    </Init>
+
+    <!-- ── STORY ─────────────────────────────────────────────────── -->
+    <Story name="HAZ01_Story">
+      <ParameterDeclarations/>
+
+      <Act name="HAZ01_Act">
+
+        <!-- Start trigger: immediately -->
+        <ManeuverGroup name="EgoApproach" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="Ego"/>
+          </Actors>
+
+          <Maneuver name="ApproachManeuver">
+
+            <!-- Event 1: ego accelerates toward pedestrian -->
+            <Event name="EgoAccelerate" priority="overwrite">
+              <Action name="AccelerateAction">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="linear"
+                                           value="5.0"
+                                           dynamicsDimension="time"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="8.33"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="SimStart" delay="0.0"
+                             conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+
+          </Maneuver>
+        </ManeuverGroup>
+
+        <!-- Pedestrian stays stationary throughout -->
+        <ManeuverGroup name="PedestrianStationary" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="Pedestrian01"/>
+          </Actors>
+          <Maneuver name="StationaryManeuver">
+            <Event name="StayStill" priority="overwrite">
+              <Action name="StayStillAction">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="step"
+                                           value="0.0"
+                                           dynamicsDimension="time"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="0.0"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="SimStart" delay="0.0"
+                             conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="ActStart" delay="0.0" conditionEdge="rising">
+              <ByValueCondition>
+                <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+
+      </Act>
+    </Story>
+
+    <!-- ── STOP TRIGGER ──────────────────────────────────────────── -->
+    <!-- Scenario ends on collision OR timeout (10 seconds) -->
+    <StopTrigger>
+
+      <!-- Stop condition 1: collision with pedestrian -->
+      <ConditionGroup>
+        <Condition name="CollisionStop" delay="0.0" conditionEdge="rising">
+          <ByEntityCondition>
+            <TriggeringEntities triggeringEntitiesRule="any">
+              <EntityRef entityRef="Ego"/>
+            </TriggeringEntities>
+            <EntityCondition>
+              <CollisionCondition>
+                <EntityRef entityRef="Pedestrian01"/>
+              </CollisionCondition>
+            </EntityCondition>
+          </ByEntityCondition>
+        </Condition>
+      </ConditionGroup>
+
+      <!-- Stop condition 2: simulation timeout -->
+      <ConditionGroup>
+        <Condition name="TimeoutStop" delay="0.0" conditionEdge="rising">
+          <ByValueCondition>
+            <SimulationTimeCondition value="10.0" rule="greaterThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+
+    </StopTrigger>
+
+  </Storyboard>
+
+</OpenSCENARIO>
