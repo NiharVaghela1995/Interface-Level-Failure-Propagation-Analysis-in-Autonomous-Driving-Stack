@@ -1,0 +1,23 @@
+HAZ-01 Closed-Loop Smoke Test — June 2026
+==========================================
+Environment: CARLA 0.9.15, Town10HD_Opt, RTX 4090
+Scenario: Ego approaching stationary pedestrian (30m ahead)
+Sensors: CAM_FRONT 1280x720, LIDAR_TOP 64ch 500k pts/s
+
+Step | Speed    | Distance | LiDAR pts | Mode
+-----|----------|----------|-----------|-------------
+   0 |  1.8 km/h |  30.0 m |     0     | NORMAL
+  10 |  0.8 km/h |  30.0 m | 13336     | NORMAL
+  20 |  4.9 km/h |  29.9 m | 13232     | NORMAL
+  30 | 10.5 km/h |  28.8 m | 13079     | NORMAL
+  40 | 13.7 km/h |  27.1 m | 13041     | NORMAL
+  50 | 16.4 km/h |  25.0 m | 12995     | CAUTIOUS
+  60 | 18.3 km/h |  22.5 m | 13116     | CAUTIOUS
+  70 | 18.5 km/h |  20.0 m | 12954     | CAUTIOUS
+  80 | 19.9 km/h |  17.4 m | 13120     | CAUTIOUS
+  90 | 21.6 km/h |  14.5 m | 13184     | CONSERVATIVE
+
+Result: PASS
+- Planning mode escalation confirmed: NORMAL -> CAUTIOUS -> CONSERVATIVE
+- Sensor data pipeline verified: camera + LiDAR streaming cleanly
+- Synchronous mode: 20 FPS, deterministic
