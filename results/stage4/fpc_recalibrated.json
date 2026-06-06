@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-07T01:04:33.960133",
+  "timestamp": "2026-06-07T01:16:59.599749",
   "method": "safety_outcome_based_fpc",
   "formula": "FPC = P(collision|injected) / P(collision|baseline)",
   "ttc_threshold": 1.5,
