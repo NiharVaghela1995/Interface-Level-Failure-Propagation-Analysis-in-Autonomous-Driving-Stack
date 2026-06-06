@@ -34,19 +34,29 @@ the full propagation chain.
 
 ## Framework Overview
 
-This project builds a systematic framework for measuring how failures at sensor 
-and algorithmic interfaces propagate through a modular AV stack.
+This project follows the standard automotive V&V workflow —
+**Specify → Integrate → Execute → Evaluate** — and extends it
+with interface-level failure propagation analysis. The six
+completed phases constitute Stage 1 (Specify). Stage 2
+(closed-loop CARLA rig) and Stage 3 (scenario campaign) are
+in active development on the `dev` branch.
 
 **Two feedback loops:**
-- **Loop 1 (Sensor Trust):** Failure diagnosis → adaptive trust reweighting. 
-  When camera degrades, LiDAR compensates. Camera trust drops 0.58 → 0.41 at max glare.
-- **Loop 2 (Planning Adaptation):** Trust weights feed an uncertainty-aware Frenet 
-  planner, selecting NORMAL / CAUTIOUS / CONSERVATIVE / EMERGENCY regimes.
+- **Loop 1 (Sensor Trust):** Failure diagnosis → adaptive trust
+  reweighting. When camera degrades, LiDAR compensates.
+  Camera trust drops 0.58 → 0.41 at max glare.
+- **Loop 2 (Planning Adaptation):** Trust weights feed an
+  uncertainty-aware Frenet planner, selecting
+  NORMAL / CAUTIOUS / CONSERVATIVE / EMERGENCY regimes.
 
-**Phase 6 Interface Injection:** Failures injected at 3 algorithmic interface 
-points (IP2: perception output, IP3: trust weights, IP4: planning output) across 
-5 SOTIF trigger scenarios. Both IP2 and IP3 show FPC < 1.0 — the framework 
-attenuates rather than amplifies upstream failures.
+**Phase 6 Interface Injection:** Failures injected at 3
+algorithmic interface points (IP2: perception output,
+IP3: trust weights, IP4: planning output) across 5 SOTIF
+trigger scenarios. Both IP2 and IP3 show FPC < 1.0 —
+the framework attenuates rather than amplifies upstream
+failures.
+
+Full V&V program specification: [docs/vnv_program.md](docs/vnv_program.md)
 
 ---
 
