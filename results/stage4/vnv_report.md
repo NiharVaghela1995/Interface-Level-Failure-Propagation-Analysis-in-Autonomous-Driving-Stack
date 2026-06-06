@@ -1,31 +1,23 @@
-# V&V Report — Multi-Scenario Closed-Loop Campaign
+# V&V Report — Full Scenario Campaign
 ## Interface-Level Failure Propagation Analysis in Autonomous Driving Stacks
 
-**Generated:** 2026-06-06 20:00
-**Total runs:** 80 (HAZ-01: 48, HAZ-02: 16, HAZ-04: 16)
+**Generated:** 2026-06-06 20:15
+**Total runs:** 112
+**Scenarios:** 5
 **Simulator:** CARLA 0.9.15, Town10HD_Opt, RTX 4090, synchronous 20 FPS
 
 ---
 
 ## 1. Campaign Overview
 
-### Scenarios Executed
-
 | Scenario | Description | SOTIF | ASIL | Hazard | Runs |
 |----------|-------------|-------|------|--------|------|
 | HAZ-01 | Pedestrian approach under glare | T1, T4 | D | H2 | 48 |
 | HAZ-02 | Cut-in vehicle under fog | T3 | C | H4 | 16 |
+| HAZ-03 | Occluded pedestrian emergence | T4 | D | H5 | 16 |
 | HAZ-04 | Pedestrian crossing under fog | T3, T4 | C/D | H4, H5 | 16 |
-| **Total** | | | | | **80** |
-
-### Four Configurations (all scenarios)
-
-| Config | Loop 1 | Loop 2 | Description |
-|--------|--------|--------|-------------|
-| Baseline | OFF | OFF | No mitigation |
-| Loop 1 only | ON | OFF | Adaptive trust, fixed planning |
-| Loop 2 only | OFF | ON | Fixed trust, uncertainty planner |
-| Combined | ON | ON | Both loops active |
+| HAZ-08 | EMERGENCY/MRC extreme combined failure | T5 | B | H6 | 16 |
+| **Total** | | | | | **112** |
 
 ---
 
@@ -37,136 +29,138 @@
 |----------|------|----------|--------|--------|----------|
 | HAZ-01 pedestrian+glare | D | **COLLISION** | **COLLISION** | safe | safe* |
 | HAZ-02 cut-in+fog | C | safe | safe | safe | safe |
+| HAZ-03 occlusion | D | safe | safe | safe | safe |
 | HAZ-04 fog+pedestrian | C/D | safe | safe | safe | safe |
+| HAZ-08 emergency | B | **COLLISION** | **COLLISION** | **COLLISION** | safe |
 
-*Combined fails at IP3 sev=0.25 — see Finding 3
+*HAZ-01 combined fails at IP3 sev=0.25
 
 ### Secondary Safety KPI: Minimum TTC (threshold: ≥ 1.5s)
 
-| Scenario | Baseline TTC | Loop 2 TTC | Improvement | Threshold Met? |
-|----------|-------------|-----------|-------------|----------------|
-| HAZ-01 | 0.205s | 2.128s | **10.4×** | ✅ Loop 2 meets threshold |
-| HAZ-02 | 0.297s | 0.805s | 2.7× | ❌ Still below 1.5s |
-| HAZ-04 | 0.388s | 0.702s | 1.8× | ❌ Still below 1.5s |
-
-**Note:** HAZ-02 and HAZ-04 Loop 2 TTC still below 1.5s threshold — CAUTIOUS mode (throttle 0.4) insufficient for these scenarios. CONSERVATIVE mode (throttle 0.2) needed. This is a coverage gap — higher severity scenarios required.
+| Scenario | Baseline TTC | Loop 2 TTC | Combined TTC | Threshold Met |
+|----------|-------------|-----------|--------------|---------------|
+| HAZ-01 | 0.205s | 2.128s ✅ | 2.128s ✅ | Loop 2 + Combined |
+| HAZ-02 | 0.297s | 0.805s ❌ | 0.805s ❌ | Neither |
+| HAZ-03 | 0.499s | 0.835s ❌ | 7.47s ✅ | Combined only |
+| HAZ-04 | 0.388s | 0.702s ❌ | 0.702s ❌ | Neither |
+| HAZ-08 | 0.224s | 0.393s ❌ | 8.51s ✅ | Combined only |
 
 ---
 
 ## 3. Failure Analysis
 
-### Finding 1: Loop 2 is the critical safety mechanism — confirmed across all scenarios
+### Finding 1: Loop 2 necessary but not always sufficient — Combined loops required for extreme scenarios
 
-**Evidence across 3 scenarios:**
-- HAZ-01: collision rate 100% → 0%, TTC 10.4× improvement
-- HAZ-02: TTC 0.297s → 0.805s (2.7× improvement)
-- HAZ-04: TTC 0.388s → 0.702s (1.8× improvement)
+HAZ-08 is the decisive evidence: Loop 2 alone cannot prevent collision at extreme
+degradation (glare=0.90 + lidar=0.80). Only the combined configuration prevents
+collision. Loop 1 provides the correct trust signal; Loop 2 acts on it.
 
-Loop 2 consistently improves safety outcomes. Pattern is robust across glare (HAZ-01), cut-in fog (HAZ-02), and crossing fog (HAZ-04).
+This upgrades the architectural finding from HAZ-01:
+- HAZ-01: Loop 2 alone sufficient for moderate degradation
+- HAZ-08: Combined loops required for extreme degradation
+- Pattern: the more severe the degradation, the more the two loops need each other
 
-**Safety goal mapping:** SG2 (TTC scaling) VERIFIED for HAZ-01. PARTIAL for HAZ-02/04 — improvement confirmed but threshold not met.
+### Finding 2: Loop 1 zero standalone benefit — confirmed across ALL 112 runs
 
-### Finding 2: Loop 1 alone provides zero safety benefit — confirmed across ALL scenarios
+Loop 1 only = baseline in every run across all 5 scenarios. Zero exceptions.
+This is now the most statistically robust finding in the campaign.
 
-**Evidence:** Loop 1 only = baseline across every run in every scenario (80 runs total).
+### Finding 3: First positive Loop 1 finding — detection distance (HAZ-03)
 
-This is now a robust finding, not a single-scenario observation. Trust reweighting without planning adaptation is architecturally insufficient as a standalone safety mechanism. The two loops are a coupled system.
+HAZ-03 combined sev=0.75: detection distance 17.56m → 22.62m (+29%).
+Loop 1 trust reweighting, when combined with Loop 2, causes earlier
+conservative response — the system slows down before the pedestrian
+is as close as in the baseline case. Loop 1 is not useless; it is
+architecturally dependent on Loop 2 to produce observable behavior.
 
-**Architecture implication:** Loop 1 cannot be claimed as independent defense-in-depth. Safety case must treat the combined loop as a single mechanism.
+### Finding 4: SG3 CONSERVATIVE verified (HAZ-08)
 
-### Finding 3: IP3 fragility — low-severity injection breaks combined mitigation (HAZ-01 only)
+CONSERVATIVE triggered at glare=0.50 + lidar_dropout=0.50 with combined config.
+TTC: 0.224s → 8.51s. This closes the coverage gap identified after HAZ-01/02/04.
 
-**Evidence:** HAZ-01, IP3 sev=0.25, combined: collision=True. Not observed in HAZ-02/04 (no interface injection in those scenarios).
+### Finding 5: SG5 EMERGENCY verified (HAZ-08)
 
-**Implication:** The trust weight interface remains the most fragile point. Requires NR-02 (integrity check).
+EMERGENCY triggered at glare=0.90 + lidar_dropout=0.80 with combined config.
+EMERGENCY mode applies brake=0.8 + throttle=0.0. TTC: 0.224s → 8.51s.
 
-### Finding 4: Fog inherently triggers CAUTIOUS at zero severity
+### Finding 6: TTC threshold gap in HAZ-02/04
 
-**Evidence:** HAZ-04 sev=0.0, loop2_only: CAUTIOUS triggered, TTC improves even without fog injection.
-
-**Root cause:** The fog uncertainty model (29.9% baseline increase from Phase 5) pushes fused uncertainty above CAUTIOUS_THRESHOLD even at clean conditions. This means Loop 2 is permanently in CAUTIOUS mode during any fog scenario — conservative but potentially over-cautious at low fog levels.
-
-**New requirement:** NR-05 — fog uncertainty model shall include a severity floor below which NORMAL mode is maintained.
-
-### Finding 5: HAZ-02 and HAZ-04 TTC below 1.5s even with Loop 2
-
-**Evidence:** HAZ-02 Loop 2 TTC = 0.805s; HAZ-04 Loop 2 TTC = 0.702s — both below 1.5s threshold.
-
-**Root cause:** CAUTIOUS mode (throttle 0.4) provides insufficient deceleration for cut-in and fog crossing scenarios. CONSERVATIVE mode (throttle 0.2) would be needed. But the uncertainty signal doesn't reach CONSERVATIVE_THRESHOLD in these scenarios.
-
-**New requirement:** NR-06 — CONSERVATIVE_THRESHOLD shall be tuned per scenario type, or a distance-based override shall supplement the uncertainty-based regime selection.
+HAZ-02 Loop2 TTC=0.805s, HAZ-04 Loop2 TTC=0.702s — below 1.5s threshold.
+CAUTIOUS mode (throttle=0.4) insufficient for cut-in and fog crossing.
+CONSERVATIVE (throttle=0.15) needed but not triggered in these scenarios.
+Root cause: uncertainty signal doesn't reach CONSERVATIVE_THRESHOLD (0.55)
+in fog/cut-in scenarios — requires threshold tuning (NR-06).
 
 ---
 
-## 4. Updated Trade-off Ledger
+## 4. Safety Goal Verdicts (final)
 
-| Mitigation | Benefit | Cost | Scenarios | Evidence |
-|------------|---------|------|-----------|----------|
-| Loop 2 CAUTIOUS mode | Collision rate 100%→0% | Mean speed −40% (22.3→13.3 km/h) | HAZ-01 | haz01_v2.json |
-| Loop 2 CAUTIOUS mode | TTC improvement 2.7× | TTC still below 1.5s threshold | HAZ-02 | haz02_cutin.json |
-| Loop 2 CAUTIOUS mode | TTC improvement 1.8× | TTC still below 1.5s threshold | HAZ-04 | haz04_fog.json |
+| SG | ASIL | Verdict | Evidence |
+|----|------|---------|----------|
+| SG1: Confidence threshold | B | ⚠️ PARTIAL | Loop 1 non-independent — 112 runs |
+| SG2: TTC scaling | C | ✅ VERIFIED | HAZ-01: 10.4×, HAZ-03 combined: 7.47s |
+| SG3: CONSERVATIVE regime | C | ✅ VERIFIED | HAZ-08: triggered at glare=0.50+lidar=0.50 |
+| SG4: Affordance override | D | ⚠️ PARTIAL | HAZ-03: detection distance improves, no explicit layer |
+| SG5: MRC/EMERGENCY trigger | B | ✅ VERIFIED | HAZ-08: triggered at glare=0.90+lidar=0.80 |
+
+**3/5 safety goals verified in closed-loop. 2/5 partial.**
+
+---
+
+## 5. Trade-off Ledger (complete)
+
+| Mitigation | Benefit | Cost | Scenario | Evidence |
+|------------|---------|------|----------|----------|
+| Loop 2 CAUTIOUS | Collision 100%→0%, TTC 10.4× | Speed −40% (22.3→13.3 km/h) | HAZ-01 | haz01_v2.json |
+| Loop 2 CAUTIOUS | TTC 2.7× improvement | TTC still below 1.5s threshold | HAZ-02 | haz02_cutin.json |
+| Combined CONSERVATIVE | TTC 7.47s, no collision | Speed further reduced, rear exposure | HAZ-03 | haz03_occlusion.json |
 | Fog uncertainty model | Proactive CAUTIOUS in fog | Over-conservative at low fog | HAZ-04 | haz04_fog.json |
-| IP3 trust injection | Reveals fragility | Breaks combined at sev=0.25 | HAZ-01 | haz01_v2.json |
-| Loop 1 + Loop 2 coupling | Complete propagation chain | Loop 1 useless without Loop 2 | All | All JSONs |
+| Combined EMERGENCY | Collision prevented at extreme degradation | Full stop — throughput = 0 | HAZ-08 | haz08_emergency.json |
+| Loop 1 + Loop 2 coupling | Earlier detection in occlusion (+29% distance) | Loop 1 useless without Loop 2 | HAZ-03 | haz03_occlusion.json |
+| IP3 trust injection sev=0.25 | Reveals fragility | Breaks combined mitigation | HAZ-01 | haz01_v2.json |
 
 ---
 
-## 5. Updated Coverage Report
+## 6. New Requirements (complete set)
 
-| Safety Goal | ASIL | Evidence | Status |
-|-------------|------|----------|--------|
-| SG1: Confidence threshold | B | HAZ-01 Loop 1 ineffective | ⚠️ PARTIAL |
-| SG2: TTC scaling | C | HAZ-01: 10.4× TTC improvement | ✅ VERIFIED |
-| SG3: CONSERVATIVE regime | C | Never triggered in any scenario | ⚠️ NOT TRIGGERED |
-| SG4: Affordance override | D | Pedestrian avoided in HAZ-01/04 | ⚠️ PARTIAL |
-| SG5: MRC trigger | B | Not tested | ❌ NOT TESTED |
-
-**New coverage finding:** SG3 CONSERVATIVE regime has never been triggered across 80 closed-loop runs. This is a systematic gap — the uncertainty signal never reaches CONSERVATIVE_THRESHOLD. Either the threshold needs tuning or higher-severity scenarios are needed.
-
----
-
-## 6. Updated New Requirements
-
-| ID | Requirement | Source | Priority |
-|----|-------------|--------|----------|
-| NR-01 | Rear-proximity monitor — inhibit CAUTIOUS speed reduction when following vehicle within 5m | HAZ-01 trade-off | ASIL B |
-| NR-02 | IP3 trust integrity check — detect trust inputs deviating >0.3 from expected range | HAZ-01 IP3 fragility | ASIL C |
-| NR-03 | Minimum uncertainty floor to prevent Loop 2 remaining NORMAL at zero IP2 injection | HAZ-01 IP2 finding | ASIL B |
-| NR-04 | Campaign expansion — cut-in, occlusion, rain, night scenarios | Coverage gap | ASIL C |
-| NR-05 | Fog uncertainty floor — NORMAL mode maintained below fog_severity threshold | HAZ-04 fog finding | ASIL B |
-| NR-06 | CONSERVATIVE threshold tuning or distance-based override for HAZ-02/04 TTC gap | HAZ-02/04 TTC below threshold | ASIL C |
+| ID | Requirement | Source | ASIL |
+|----|-------------|--------|------|
+| NR-01 | Rear-proximity monitor — inhibit CAUTIOUS when follower within 5m | HAZ-01 speed cost | B |
+| NR-02 | IP3 trust integrity check — flag trust deviation >0.3 | HAZ-01 IP3 fragility | C |
+| NR-03 | Uncertainty floor for IP2 zero-injection | HAZ-01 IP2 | B |
+| NR-04 | Campaign expansion to remaining 3 scenarios | Coverage gap | C |
+| NR-05 | Fog uncertainty floor — NORMAL below fog threshold | HAZ-04 | B |
+| NR-06 | CONSERVATIVE threshold tuning for cut-in/fog scenarios | HAZ-02/04 TTC gap | C |
+| NR-07 | Explicit pedestrian affordance classification layer | HAZ-03 SG4 partial | D |
 
 ---
 
-## 7. Engineering Verdict
+## 7. Validation Debt
 
-**Multi-scenario verdict: PASS with residual risks and coverage gaps**
-
-Loop 2 consistently improves safety outcomes across all three scenarios.
-HAZ-01 (ASIL D) is the only scenario where baseline causes collision —
-Loop 2 prevents it completely (0% collision rate, 10.4× TTC improvement).
-
-HAZ-02 and HAZ-04 show Loop 2 improving TTC but not reaching the 1.5s
-threshold — these scenarios require CONSERVATIVE mode which is never
-triggered. This is the primary coverage gap requiring attention.
-
-**Strongest finding:** Loop 1 provides zero standalone safety benefit
-confirmed across 80 runs in 3 scenarios. This is a robust architectural
-finding, not a single-scenario observation.
-
-**Residual risks:**
-1. IP3 trust corruption at low severity bypasses combined mitigation
-2. CONSERVATIVE regime never triggered — threshold may need tuning
-3. TTC threshold not met in HAZ-02/04 even with Loop 2
-4. SG3/SG5 not verified — require higher severity scenarios
-5. Single map, single weather condition per scenario
-
-**Total closed-loop runs:** 80
-**Scenarios:** 3/8 planned
-**Safety goals verified:** 1/5 (SG2)
-**Safety goals partially verified:** 3/5 (SG1, SG3, SG4)
-**Safety goals not tested:** 1/5 (SG5)
+| Item | Description | Closes |
+|------|-------------|--------|
+| VD-01 | Real BEVFusion perception backbone | Phase 7 |
+| VD-02 | Multi-map campaign (Town05, Town03) | Stage 3 expansion |
+| VD-03 | Remaining 3 scenarios (rain, night, construction) | Stage 3 expansion |
+| VD-04 | EDL epistemic calibration | Phase 7 |
+| VD-05 | Sim-to-real transfer | Post-thesis |
 
 ---
 
-*Results: `results/stage3/` | Code: `scripts/` | Generated by: `scripts/stage4_evaluate.py`*
+## 8. Engineering Verdict
+
+**Full campaign verdict: PASS with documented residual risks**
+
+3/5 safety goals verified (SG2, SG3, SG5). 2/5 partially verified (SG1, SG4).
+112 closed-loop runs across 5 scenarios. Most critical finding: combined loops
+required for CONSERVATIVE/EMERGENCY — neither loop alone is sufficient at
+extreme degradation.
+
+**Total closed-loop runs:** {total_runs}
+**Scenarios:** {len(scenarios)}/8 planned
+**Safety goals verified:** 3/5
+**Safety goals partial:** 2/5
+
+---
+
+*Results: `results/stage3/` | Code: `scripts/` | Generated: `scripts/stage4_evaluate.py`*

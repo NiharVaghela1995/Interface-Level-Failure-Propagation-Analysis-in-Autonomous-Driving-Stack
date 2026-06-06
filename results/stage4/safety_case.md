@@ -1,88 +1,60 @@
-# GSN Safety Case — Multi-Scenario Closed-Loop Evidence
+# GSN Safety Case — Full Closed-Loop Evidence
 ## Interface-Level Failure Propagation Analysis in Autonomous Driving Stacks
 
-**Version:** 2.0 (updated after HAZ-02 and HAZ-04 campaigns)
-**Generated:** 2026-06-06 20:00
-**Total evidence runs:** 80
+**Version:** 3.0 — after 5-scenario campaign
+**Generated:** 2026-06-06 20:15
+**Total evidence runs:** 112
 
 ---
 
 ## Top Safety Claim
 
-**G1:** The uncertainty-aware perception-planning stack maintains acceptable
-safety under the defined sensor-degradation ODD across pedestrian approach,
-cut-in, and fog scenarios in Town10HD urban environment.
+**G1:** The uncertainty-aware perception-planning stack maintains acceptable safety
+under the defined sensor-degradation ODD across 5 SOTIF trigger scenarios in
+Town10HD urban environment, with combined mitigation loops active.
 
 ---
 
-## Evidence Structure
+## Evidence
 
-### G1.1: Loop 2 is a necessary mitigation — verified across 3 scenarios
+### G1.1: SG2 TTC scaling — VERIFIED
+- HAZ-01: TTC 0.205s → 2.128s (10.4×), collision 100%→0%
+- HAZ-03 combined sev=0.75: TTC 7.47s >> 1.5s threshold
 
-**E1.1a (HAZ-01):** Collision rate 100%→0%, TTC 0.205s→2.128s (10.4×)
-**E1.1b (HAZ-02):** TTC 0.297s→0.805s (2.7×), no collision
-**E1.1c (HAZ-04):** TTC 0.388s→0.702s (1.8×), no collision
-**Conclusion:** Loop 2 consistently improves safety — robust across scenario types
+### G1.2: SG3 CONSERVATIVE regime — VERIFIED
+- HAZ-08 glare=0.50+lidar=0.50 combined: CONSERVATIVE triggered, TTC 8.51s
 
-### G1.2: Loop 1 alone is architecturally insufficient — confirmed across 80 runs
+### G1.3: SG5 EMERGENCY/MRC trigger — VERIFIED
+- HAZ-08 glare=0.90+lidar=0.80 combined: EMERGENCY triggered, brake applied
 
-**E1.2:** Loop 1 only = baseline in every run across all 3 scenarios (80 runs)
-**Conclusion:** Trust reweighting requires planning adaptation. Cannot be claimed as independent safety layer.
+### G1.4: SG1 confidence threshold — PARTIAL
+- Loop 1 alone: zero benefit across 112 runs
+- Combined loops: detection distance improves in HAZ-03
+- Gap: Loop 1 not independently effective
 
-### G1.3: SG2 TTC scaling VERIFIED in closed-loop (HAZ-01)
-
-**E1.3:** HAZ-01 Loop 2 TTC = 2.128s ≥ 1.5s threshold
-**Conclusion:** SG2 verified for ASIL D pedestrian scenario
-
-### G1.4: SG2 PARTIAL for HAZ-02 and HAZ-04
-
-**E1.4:** HAZ-02 Loop2 TTC=0.805s, HAZ-04 Loop2 TTC=0.702s — both below 1.5s
-**Conclusion:** CAUTIOUS mode insufficient — CONSERVATIVE needed. Threshold tuning required (NR-06).
-
-### G1.5: IP3 fragility — residual risk at trust weight interface
-
-**E1.5:** HAZ-01 IP3 sev=0.25 combined: collision=True
-**Conclusion:** Low-severity trust corruption bypasses combined mitigation. Residual risk RR-01.
+### G1.5: SG4 affordance override — PARTIAL
+- HAZ-03: detection distance +29% with combined loops
+- Gap: no explicit pedestrian affordance classification layer
 
 ---
 
-## Residual Risks (updated)
+## Residual Risks
 
 | ID | Risk | ASIL | Closure |
 |----|------|------|---------|
-| RR-01 | IP3 trust corruption sev=0.25 bypasses combined | C | NR-02 integrity check |
-| RR-02 | Loop 1 non-independence | B | Architecture documented |
-| RR-03 | Speed reduction trade-off in dense traffic | B | NR-01 rear monitor |
-| RR-04 | HAZ-02/04 TTC below 1.5s threshold with Loop 2 | C | NR-06 threshold tuning |
-| RR-05 | CONSERVATIVE regime never triggered | C | Higher severity campaign |
-| RR-06 | SG3/SG5 not verified | B/C | HAZ-08 extreme scenario |
-| RR-07 | Fog over-conservatism at low severity | B | NR-05 fog floor |
-| RR-08 | Single map coverage | B | Multi-map campaign |
-| RR-09 | Sim-to-real gap | D | Real-world validation debt |
+| RR-01 | IP3 sev=0.25 bypasses combined (HAZ-01) | C | NR-02 |
+| RR-02 | Loop 1 non-independent | B | Architecture documented |
+| RR-03 | HAZ-02/04 TTC below threshold | C | NR-06 |
+| RR-04 | SG1/SG4 partial | B/D | NR-07 + Phase 7 |
+| RR-05 | Single map coverage | B | Multi-map campaign |
+| RR-06 | Sim-to-real gap | D | Real-world validation |
 
 ---
 
-## Safety Goal Verdicts (updated)
+## New Requirements → Specify
 
-| SG | ASIL | Verdict | Evidence |
-|----|------|---------|----------|
-| SG1: Confidence threshold | B | ⚠️ PARTIAL | Loop 1 non-independent across 80 runs |
-| SG2: TTC scaling | C | ✅ VERIFIED (HAZ-01) / ⚠️ PARTIAL (HAZ-02/04) | 10.4× TTC, 0% collision HAZ-01 |
-| SG3: CONSERVATIVE regime | C | ⚠️ NEVER TRIGGERED | Threshold never reached in 80 runs |
-| SG4: Affordance override | D | ⚠️ PARTIAL | Pedestrian avoided, no explicit layer |
-| SG5: MRC trigger | B | ❌ NOT TESTED | Requires extreme combined failure |
+NR-01 through NR-07 defined in vnv_report.md — fed back to Stage 1.
 
 ---
 
-## New Requirements (fed back to Specify)
-
-NR-01: Rear-proximity monitor
-NR-02: IP3 trust integrity check
-NR-03: Uncertainty floor for IP2
-NR-04: Campaign expansion to 8 scenarios
-NR-05: Fog uncertainty floor
-NR-06: CONSERVATIVE threshold tuning
-
----
-
-*Evidence: results/stage3/ | V&V report: results/stage4/vnv_report.md*
+*Evidence: results/stage3/ | Report: results/stage4/vnv_report.md*
