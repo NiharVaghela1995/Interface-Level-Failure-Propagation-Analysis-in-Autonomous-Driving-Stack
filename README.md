@@ -4,7 +4,7 @@
 ![Domain](https://img.shields.io/badge/domain-AV%20Safety%20%26%20Validation-green)
 ![Status](https://img.shields.io/badge/status-active%20research-orange)
 ![Dataset](https://img.shields.io/badge/dataset-nuScenes%20mini-lightgrey)
-![Evaluation](https://img.shields.io/badge/evaluation-open--loop-yellow)
+![Evaluation](https://img.shields.io/badge/evaluation-closed--loop%20%2B%20open--loop-brightgreen)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
 [![Interactive Demo](https://img.shields.io/badge/demo-interactive%20viz-blue)](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)
 
@@ -34,29 +34,19 @@ the full propagation chain.
 
 ## Framework Overview
 
-This project follows the standard automotive V&V workflow —
-**Specify → Integrate → Execute → Evaluate** — and extends it
-with interface-level failure propagation analysis. The six
-completed phases constitute Stage 1 (Specify). Stage 2
-(closed-loop CARLA rig) and Stage 3 (scenario campaign) are
-in active development on the `dev` branch.
+This project builds a systematic framework for measuring how failures at sensor 
+and algorithmic interfaces propagate through a modular AV stack.
 
 **Two feedback loops:**
-- **Loop 1 (Sensor Trust):** Failure diagnosis → adaptive trust
-  reweighting. When camera degrades, LiDAR compensates.
-  Camera trust drops 0.58 → 0.41 at max glare.
-- **Loop 2 (Planning Adaptation):** Trust weights feed an
-  uncertainty-aware Frenet planner, selecting
-  NORMAL / CAUTIOUS / CONSERVATIVE / EMERGENCY regimes.
+- **Loop 1 (Sensor Trust):** Failure diagnosis → adaptive trust reweighting. 
+  When camera degrades, LiDAR compensates. Camera trust drops 0.58 → 0.41 at max glare.
+- **Loop 2 (Planning Adaptation):** Trust weights feed an uncertainty-aware Frenet 
+  planner, selecting NORMAL / CAUTIOUS / CONSERVATIVE / EMERGENCY regimes.
 
-**Phase 6 Interface Injection:** Failures injected at 3
-algorithmic interface points (IP2: perception output,
-IP3: trust weights, IP4: planning output) across 5 SOTIF
-trigger scenarios. Both IP2 and IP3 show FPC < 1.0 —
-the framework attenuates rather than amplifies upstream
-failures.
-
-Full V&V program specification: [docs/vnv_program.md](docs/vnv_program.md)
+**Phase 6 Interface Injection:** Failures injected at 3 algorithmic interface 
+points (IP2: perception output, IP3: trust weights, IP4: planning output) across 
+5 SOTIF trigger scenarios. Both IP2 and IP3 show FPC < 1.0 — the framework 
+attenuates rather than amplifies upstream failures.
 
 ---
 
@@ -70,9 +60,9 @@ Full V&V program specification: [docs/vnv_program.md](docs/vnv_program.md)
 > **Dataset:** nuScenes mini split — 10 scenes, 404 samples.
 > Full nuScenes val split planned for Phase 6.
 >
-> **Evaluation mode:** All experiments are **open-loop** — sensor inputs are
-> processed and planning outputs computed, but no closed-loop vehicle control
-> is performed. Closed-loop CARLA validation is planned for Phase 7.
+> **Evaluation mode:** Phases 1–6 open-loop (nuScenes mini, synthetic degradation).
+> Stages 2–4 closed-loop in CARLA 0.9.15 (Town10HD_Opt, RTX 4090) — HAZ-01
+> scenario with 48-run four-configuration mitigation campaign completed.
 >
 > **Sensor degradation:** Camera corruptions are synthetically applied.
 > LiDAR dropout is simulated via random point removal.
@@ -254,7 +244,10 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 | Phase 4b | Evidential Deep Learning — aleatoric vs epistemic | ✅ Complete |
 | Phase 5 | Open-loop robustness benchmark — 8 corruptions × 5 severities | ✅ Complete |
 | Phase 6 | Interface injection framework — FPC analysis across T1–T5 | ✅ Complete |
-| Phase 7 | Real BEVFusion inference + closed-loop CARLA validation | 📋 Planned |
+| Stage 2 | CARLA closed-loop rig — ego + CAM_FRONT + LIDAR_TOP operational | ✅ Complete |
+| Stage 3 | HAZ-01 four-configuration campaign — 48 runs, FPC to safety outcome | ✅ Complete |
+| Stage 4 | V&V report, GSN safety case, trade-off ledger | ✅ Complete |
+| Phase 7 | Real BEVFusion inference + multi-scenario campaign | 📋 Planned |
 
 ---
 
@@ -267,3 +260,53 @@ Evidential Deep Learning · RSS · CBF · SOTIF (ISO 21448) · ISO 26262
 ## Dataset
 nuScenes mini (10 scenes, 404 samples) — [nuscenes.org](https://nuscenes.org)
 Registration required for download.
+
+---
+
+## Closed-Loop V&V Results — Stages 2–4
+
+**Simulator:** CARLA 0.9.15 · Town10HD_Opt · RTX 4090 · synchronous mode 20 FPS
+
+### Stage 2 — Integration
+CARLA closed-loop rig operational. Ego vehicle (Tesla Model3) + CAM_FRONT (1280×720) +
+LIDAR_TOP (64ch, 14,645 pts/frame) streaming in synchronous mode. 155 spawn points,
+207 actor blueprints verified.
+
+### Stage 3 — HAZ-01 Scenario Campaign
+
+**Scenario:** Ego approaching stationary pedestrian (30m) under sensor degradation.
+**Campaign:** 4 severities × 3 injection points × 4 configurations = 48 runs.
+
+| Configuration | Collision Rate | Min TTC | Finding |
+|---------------|---------------|---------|---------|
+| Baseline | 100% | 0.205s | Unmitigated stack always collides |
+| Loop 1 only | 100% | 0.205s | Trust reweighting alone provides zero safety benefit |
+| Loop 2 only | 0% | 2.128s | Uncertainty-aware planning prevents all collisions |
+| Combined | ~92% safe | 2.128s | IP3 sev=0.25 breaks combined mitigation |
+
+**Key numbers:**
+- TTC improvement: 0.205s → 2.128s (**10.4× improvement** with Loop 2)
+- Speed cost: 22.3 → 13.3 km/h (−40% — Loop 2 conservatism trade-off)
+- Most fragile interface: **IP3 (trust weights)** — low-severity injection bypasses combined mitigation
+
+### Stage 4 — Evaluation
+
+**Safety goal verdict:**
+
+| Safety Goal | ASIL | Status |
+|-------------|------|--------|
+| SG2: TTC scaling | C | ✅ VERIFIED — 10.4× TTC improvement in closed-loop |
+| SG1: Confidence threshold | B | ⚠️ PARTIAL — Loop 1 requires Loop 2 to be effective |
+| SG3: CONSERVATIVE regime | C | ⚠️ PARTIAL — CAUTIOUS triggered, CONSERVATIVE not reached |
+| SG4: Affordance override | D | ⚠️ PARTIAL — pedestrian avoided, no explicit affordance layer |
+| SG5: MRC trigger | B | ❌ NOT TESTED — requires extreme combined failure scenario |
+
+**New requirements generated:**
+- NR-01: Rear-proximity monitor to inhibit speed reduction in dense following traffic
+- NR-02: IP3 trust weight integrity check — detect low-severity trust corruption
+- NR-03: Minimum uncertainty floor to prevent Loop 2 remaining in NORMAL at zero injection
+
+Full V&V report: [`results/stage4/vnv_report.md`](results/stage4/vnv_report.md)
+GSN safety case: [`results/stage4/safety_case.md`](results/stage4/safety_case.md)
+Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_off_ledger.md)
+
