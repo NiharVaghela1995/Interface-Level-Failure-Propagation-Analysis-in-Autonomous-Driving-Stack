@@ -1,0 +1,2389 @@
+{
+  "timestamp": "2026-06-07T01:33:50.400748",
+  "description": "Stage 4 KPI supplement \u2014 missing metrics computed from existing data",
+  "formal_criteria": {
+    "collision_count": {
+      "threshold": 0,
+      "operator": "==",
+      "unit": "count"
+    },
+    "min_ttc_s": {
+      "threshold": 1.5,
+      "operator": ">=",
+      "unit": "s"
+    },
+    "min_clearance_m": {
+      "threshold": 1.0,
+      "operator": ">=",
+      "unit": "m"
+    },
+    "lane_departure_count": {
+      "threshold": 0,
+      "operator": "==",
+      "unit": "count"
+    },
+    "max_accel_ms2": {
+      "threshold": 3.0,
+      "operator": "<=",
+      "unit": "m/s2"
+    },
+    "max_jerk_ms3": {
+      "threshold": 2.0,
+      "operator": "<=",
+      "unit": "m/s3"
+    },
+    "intervention_rate": {
+      "threshold": null,
+      "operator": "report",
+      "unit": "changes/100steps"
+    },
+    "fpc_to_safety_outcome": {
+      "threshold": 1.0,
+      "operator": "<=",
+      "unit": "dimensionless"
+    }
+  },
+  "cross_scenario_summary": {
+    "HAZ-02": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 0.0,
+      "mean_intervention_rate": 1.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 0.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-03": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 0.0,
+      "mean_intervention_rate": 0.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 0.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-04": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 0.0,
+      "mean_intervention_rate": 1.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 0.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-05": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 100.0,
+      "mean_intervention_rate": 0.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 100.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-06": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 100.0,
+      "mean_intervention_rate": 0.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 100.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-07": {
+      "collision_pass_pct": 100.0,
+      "ttc_pass_pct": 100.0,
+      "mean_intervention_rate": 0.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 100.0,
+      "emergency_triggered_pct": 0.0
+    },
+    "HAZ-08": {
+      "collision_pass_pct": 0.0,
+      "ttc_pass_pct": 0.0,
+      "mean_intervention_rate": 0.0,
+      "mean_speed_reduction_pct": 0.0,
+      "conservative_triggered_pct": 0.0,
+      "emergency_triggered_pct": 0.0
+    }
+  },
+  "per_scenario_kpis": {
+    "HAZ-01": [],
+    "HAZ-02": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.297,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.805,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-03": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.499,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.835,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 7.47,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-04": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.388,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 1.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 1,
+        "final_mode": "CAUTIOUS",
+        "collision": false,
+        "min_ttc": 0.702,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-05": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.496,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.879,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.879,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-06": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.879,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.879,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 0.879,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.367,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 9.591,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-07": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.25,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": false,
+        "min_ttc": 0.319,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.545,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      }
+    ],
+    "HAZ-08": [
+      {
+        "param": 0.0,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": true,
+        "min_ttc": 0.393,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.0,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": true,
+        "min_ttc": 0.393,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.5,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.51,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": true,
+        "min_ttc": 0.393,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.75,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CONSERVATIVE",
+        "collision": false,
+        "min_ttc": 8.51,
+        "min_distance": null,
+        "conservative_triggered": true,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.9,
+        "config": "baseline",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.9,
+        "config": "loop1_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "NORMAL",
+        "collision": true,
+        "min_ttc": 0.224,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.9,
+        "config": "loop2_only",
+        "pass_fail": {
+          "collision": "FAIL",
+          "min_ttc": "FAIL",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "CAUTIOUS",
+        "collision": true,
+        "min_ttc": 0.393,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": false
+      },
+      {
+        "param": 0.9,
+        "config": "combined",
+        "pass_fail": {
+          "collision": "PASS",
+          "min_ttc": "PASS",
+          "min_clearance": "FAIL",
+          "lane_departure": "NOT_INSTRUMENTED",
+          "accel_jerk": "NOT_INSTRUMENTED"
+        },
+        "intervention_rate_per_100": 0.0,
+        "speed_reduction_pct": 0.0,
+        "mode_changes": 0,
+        "final_mode": "EMERGENCY",
+        "collision": false,
+        "min_ttc": 8.51,
+        "min_distance": null,
+        "conservative_triggered": false,
+        "emergency_triggered": true
+      }
+    ]
+  },
+  "not_instrumented": {
+    "lane_departure": {
+      "status": "NOT_INSTRUMENTED",
+      "reason": "Current rig uses direct throttle control without lane-keeping. Ego follows straight trajectory to pedestrian \u2014 lane departure not applicable in current scenario design.",
+      "closure": "Requires Autoware integration with lane-keeping planner. Planned for Phase 7."
+    },
+    "max_longitudinal_accel_jerk": {
+      "status": "PROXY_ONLY",
+      "reason": "Accel/jerk not directly logged. Speed reduction (mean_speed baseline\u2192loop2) is used as a proxy for comfort cost. HAZ-01: 22.3\u219213.3 km/h (-40%) is the documented trade-off.",
+      "closure": "Add velocity logging per step and compute finite differences. Can be added to existing scripts without RunPod. See NR-add: log velocity array per run."
+    },
+    "rosbag_recording": {
+      "status": "NOT_INSTRUMENTED",
+      "reason": "Current rig uses Python CARLA API directly without ROS2. rosbag requires ROS2 topic pipeline.",
+      "closure": "Requires Autoware + ROS2 bridge. Planned for Phase 7."
+    },
+    "scenario_runner_criteria": {
+      "status": "PYTHON_EQUIVALENT",
+      "reason": "Pass/fail criteria implemented in Python scripts (collision flag, TTC threshold, distance threshold). Functionally equivalent to Scenario Runner criteria \u2014 same thresholds, same evaluation logic.",
+      "closure": "Formal Scenario Runner .criteria files would replace Python checks. Planned for Phase 7 with Autoware integration."
+    }
+  },
+  "honest_gaps": [
+    "Lane departure: not applicable in current scenario design (straight approach)",
+    "Accel/jerk: proxy only \u2014 speed reduction used as comfort cost measure",
+    "rosbag: requires ROS2/Autoware \u2014 Phase 7",
+    "Scenario Runner .criteria: Python equivalent used \u2014 Phase 7 for formal"
+  ]
+}

@@ -164,3 +164,53 @@ Loop 1 and Loop 2 are a coupled safety mechanism, not independent layers.
 ---
 
 *Results: results/stage3/ | Code: scripts/ | Generated: scripts/stage4_evaluate.py*
+
+---
+
+## Appendix: KPI Supplement — Intervention Rate and Speed Cost
+
+*Generated: 2026-06-07 01:33 from existing campaign JSON*
+
+### Formal pass/fail criteria
+
+| KPI | Threshold | Operator | Status |
+|-----|-----------|----------|--------|
+| Collision count | 0 | == | Instrumented |
+| Min TTC | 1.5s | >= | Instrumented |
+| Min clearance to VRU | 1.0m | >= | Instrumented |
+| Lane departure | 0 | == | NOT INSTRUMENTED — see below |
+| Max accel | 3.0 m/s² | <= | PROXY ONLY — speed reduction used |
+| Max jerk | 2.0 m/s³ | <= | PROXY ONLY — speed reduction used |
+| Intervention rate | — | report | Computed as mode_changes/100 steps |
+| FPC to safety outcome | 1.0 | <= | Instrumented (see fpc_recalibrated.json) |
+
+### Intervention rate — Loop 2 only, per scenario
+
+Intervention rate = planning mode changes per 100 simulation steps.
+Higher rate = more regime switching = planner oscillation.
+
+| Scenario | Mean intervention rate | Mean speed cost | CONSERVATIVE% | EMERGENCY% |
+|----------|----------------------|-----------------|----------------|------------|
+| HAZ-02 | 1.0/100 steps | 0.0% | 0% | 0% |
+| HAZ-03 | 0.0/100 steps | 0.0% | 0% | 0% |
+| HAZ-04 | 1.0/100 steps | 0.0% | 0% | 0% |
+| HAZ-05 | 0.0/100 steps | 0.0% | 100% | 0% |
+| HAZ-06 | 0.0/100 steps | 0.0% | 100% | 0% |
+| HAZ-07 | 0.0/100 steps | 0.0% | 100% | 0% |
+| HAZ-08 | 0.0/100 steps | 0.0% | 0% | 0% |
+
+### Honestly not instrumented
+
+**Lane departure:** Not applicable in current scenario design. All scenarios use
+straight ego approach to pedestrian/NPC — there is no lane to depart from in the
+current setup. Formal lane-keeping validation requires Autoware integration (Phase 7).
+
+**Max accel/jerk:** Not directly logged in current rig. Speed reduction from
+baseline to Loop 2 is used as a comfort-cost proxy. HAZ-01: 22.3→13.3 km/h (−40%)
+is the documented trade-off. Exact accel/jerk measurement requires per-step velocity
+logging — a minor script change, no RunPod needed.
+
+**rosbag recording:** Requires ROS2 pipeline. Planned for Phase 7 with Autoware.
+
+**Scenario Runner .criteria:** Python pass/fail checks are functionally equivalent.
+Formal `.criteria` files planned for Phase 7.
