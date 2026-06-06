@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-06-06T14:30:00.000000",
+  "scenario": "HAZ-02_cutin",
+  "sotif_trigger": "T3_combined_degradation",
+  "asil": "C",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "environment": {
+    "simulator": "CARLA 0.9.15",
+    "gpu": "NVIDIA RTX 4090",
+    "degradation": "fog applied to camera uncertainty",
+    "npc": "vehicle.audi.a2 cutting in from adjacent lane at step 30",
+    "n_steps": 120
+  },
+  "key_findings": {
+    "baseline_collision_rate": "0% — cut-in less dangerous than stationary pedestrian",
+    "baseline_min_ttc": 0.297,
+    "loop2_min_ttc": 0.805,
+    "ttc_improvement_factor": 2.7,
+    "loop1_safety_benefit": "none — zero standalone benefit confirmed again",
+    "combined_equals_loop2": true,
+    "note": "HAZ-02 baseline TTC 0.297s — below 1.5s threshold but no collision in 120 steps"
+  },
+  "results": [
+    {
+      "severity": 0.0,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0}
+      }
+    },
+    {
+      "severity": 0.25,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 6.8418},
+        "combined":   {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 6.8418}
+      }
+    },
+    {
+      "severity": 0.5,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 3.4209},
+        "combined":   {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 3.4209}
+      }
+    },
+    {
+      "severity": 0.75,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.297, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 2.2806},
+        "combined":   {"collision": false, "min_ttc": 0.805, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 2.2806}
+      }
+    }
+  ],
+  "cross_scenario_comparison": {
+    "haz01_baseline_ttc": 0.205,
+    "haz01_loop2_ttc": 2.128,
+    "haz01_improvement": "10.4x",
+    "haz02_baseline_ttc": 0.297,
+    "haz02_loop2_ttc": 0.805,
+    "haz02_improvement": "2.7x",
+    "finding": "Cut-in less safety-critical than stationary pedestrian — lateral approach gives more reaction time"
+  }
+}

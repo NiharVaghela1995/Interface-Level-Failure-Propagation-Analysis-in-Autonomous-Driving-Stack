@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-06-06T14:50:00.000000",
+  "scenario": "HAZ-04_fog_pedestrian",
+  "sotif_trigger": "T3_T4_fog_combined_pedestrian",
+  "asil": "C_D",
+  "map": "Carla/Maps/Town10HD_Opt",
+  "total_runs": 16,
+  "environment": {
+    "simulator": "CARLA 0.9.15",
+    "gpu": "NVIDIA RTX 4090",
+    "degradation": "fog applied to both camera and LiDAR uncertainty",
+    "fog_model": "Phase5_benchmark_29.9pct_camera_uncertainty_increase",
+    "pedestrian": "crosses laterally from 4m offset at 1.4 m/s",
+    "n_steps": 120
+  },
+  "key_findings": {
+    "baseline_collision_rate": "0% — fog pedestrian less immediately dangerous than glare+stationary",
+    "baseline_min_ttc": 0.388,
+    "loop2_min_ttc": 0.702,
+    "ttc_improvement_factor": 1.8,
+    "loop1_safety_benefit": "none — confirmed third time across HAZ-01, HAZ-02, HAZ-04",
+    "combined_equals_loop2": true,
+    "fog_triggers_cautious_at_zero_severity": true,
+    "note": "Fog uncertainty model pushes above CAUTIOUS_THRESHOLD even at sev=0.0 — fog inherently triggers conservative planning"
+  },
+  "results": [
+    {
+      "severity": 0.0,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 0.0},
+        "combined":   {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 0.0}
+      }
+    },
+    {
+      "severity": 0.25,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 3.2371},
+        "combined":   {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 3.2371}
+      }
+    },
+    {
+      "severity": 0.5,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 1.6186},
+        "combined":   {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 1.6186}
+      }
+    },
+    {
+      "severity": 0.75,
+      "configs": {
+        "baseline":   {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop1_only": {"collision": false, "min_ttc": 0.388, "final_mode": "NORMAL",   "mode_changes": 0, "fpc": 0.0},
+        "loop2_only": {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 1.0790},
+        "combined":   {"collision": false, "min_ttc": 0.702, "final_mode": "CAUTIOUS", "mode_changes": 1, "fpc": 1.0790}
+      }
+    }
+  ],
+  "cross_scenario_comparison": {
+    "haz01_baseline_ttc": 0.205,
+    "haz01_loop2_ttc": 2.128,
+    "haz01_improvement": "10.4x",
+    "haz01_collision_baseline": true,
+    "haz02_baseline_ttc": 0.297,
+    "haz02_loop2_ttc": 0.805,
+    "haz02_improvement": "2.7x",
+    "haz02_collision_baseline": false,
+    "haz04_baseline_ttc": 0.388,
+    "haz04_loop2_ttc": 0.702,
+    "haz04_improvement": "1.8x",
+    "haz04_collision_baseline": false,
+    "finding": "HAZ-01 most safety-critical — only scenario where baseline causes collision. Fog and cut-in dangerous (TTC < 1.5s threshold) but not collision-causing in 120-step runs",
+    "consistent_finding": "Loop 1 alone provides zero safety benefit across all three scenarios — confirmed pattern"
+  }
+}
