@@ -164,3 +164,17 @@ Requirement → Hazard (HARA + interface provenance) → Safety goal → Scenari
 ---
 
 *All phase results (Phases 1–6), code, and figures are in the repository root. This document describes the full program scope including planned stages.*
+
+---
+
+## Stage 2 Status — Updated
+
+**Smoke test passed: June 2026**
+
+- CARLA 0.9.15 running on RTX 4090, Ubuntu 18.04 container
+- Ego vehicle (Tesla Model3) spawned at Town10HD_Opt
+- CAM_FRONT: 1280×720, 197 frames verified
+- LIDAR_TOP: 14,645 points per frame verified
+- Closed-loop sensor data pipeline confirmed operational
+- 155 spawn points available, 207 actor blueprints
+- Environment: carlasim/carla:0.9.15 Docker image on RunPod RTX 4090
