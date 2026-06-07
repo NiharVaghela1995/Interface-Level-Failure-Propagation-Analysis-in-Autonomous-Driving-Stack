@@ -329,6 +329,6 @@ GSN safety case: [`results/stage4/safety_case.md`](results/stage4/safety_case.md
 
 Coverage tracker: [`docs/coverage_tracker.md`](docs/coverage_tracker.md)
 
-Interactive results viz: [stage3_results.html](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/docs/stage3_results.html)
+Interactive results viz: [stage3_results.html](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/stage3_results.html)
 
 Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_off_ledger.md)
