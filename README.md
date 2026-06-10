@@ -10,13 +10,9 @@
 
 ## What this project is
 
-A **Verification & Validation framework for autonomous driving systems** that follows the standard industry V-model — hazard analysis (HARA/SOTIF), scenario-based test design, closed-loop simulation, KPI measurement, coverage analysis, and a GSN safety case — and extends it with a systems-level analysis of how failures originate at one interface of a modular AV stack, propagate across interfaces, how mitigation loops reshape that propagation, and what residual risk and trade-offs the mitigations leave behind.
-
-> **One-sentence positioning:** An AV Safety, Simulation & Validation framework following industry-standard V&V practices, extended with interface-level failure propagation, mitigation measurement, and trade-off accounting.
-
-The framework is read in that order deliberately:
-1. **Industry V&V workflow first** — so any validation engineer, scenario engineer, or functional-safety reviewer recognises every stage as their own.
-2. **Systems-level extension second** — so the reader additionally sees how failures propagate across interfaces and how mitigation loops change safety outcomes.
+- A simulation-based safety validation program for autonomous driving systems, built on the standard automotive V-model — hazard analysis (HARA/SOTIF), scenario-based test design, closed-loop simulation in CARLA, KPI measurement, coverage analysis, and a GSN safety case.
+- On top of that foundation, the project instruments four interface points inside a modular AV perception-planning stack and measures how sensor failures at one boundary propagate downstream, how two mitigation loops reshape that propagation, and what safety outcomes and trade-offs each mitigation produces.
+- The V&V program is the primary contribution. The failure propagation analysis is the extension.
 
 ## V-model Architecture
 
