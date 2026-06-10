@@ -248,6 +248,8 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 
 - [Why modular AV stacks can't tilt their head](https://medium.com/@niharvaghela/why-modular-av-stacks-cant-tilt-their-head-17fa40497c13) — the systems thinking behind this project: technical choices, reasoning, honest limitations
 
+- [I built the industry’s AV safety V&V playbook from scratch — then read Foretellix’s guide](https://medium.com/@niharvaghela/i-built-the-industrys-av-safety-v-v-playbook-from-scratch-then-read-foretellix-s-guide-e066723458ce) — How 160 closed-loop runs in CARLA mapped to the Safety-Driven V&V methodology — and one finding the guide doesn't mention
+
 ---
 
 ## Research Roadmap
