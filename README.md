@@ -70,20 +70,15 @@ On top of the standard V-model, the framework instruments **four interface point
 
 ## Implementation Notes
 
-> **Perception backbone:** All phases use SegFormer-B2 (pretrained on Cityscapes)
-> as the camera perception backbone — a proxy for BEVFusion's camera branch,
-> architecturally equivalent for uncertainty quantification and attention
-> visualization purposes. Phase 7 will replace this with real BEVFusion inference.
->
-> **Dataset:** nuScenes mini split — 10 scenes, 404 samples.
-> Full nuScenes val split planned for Phase 6.
+> **Perception backbone:** Phases 1–6 use SegFormer-B2 (pretrained on Cityscapes)
+> as the camera perception backbone — a proxy for BEVFusion's camera branch.
+> Phase 7 will replace this with real BEVFusion inference on nuScenes mini.
 >
 > **Evaluation mode:** Phases 1–6 open-loop (nuScenes mini, synthetic degradation).
-> Stages 2–4 closed-loop in CARLA 0.9.15 (Town10HD_Opt, RTX 4090) — HAZ-01
-> scenario with 48-run four-configuration mitigation campaign completed.
+> Stages 2–4 closed-loop in CARLA 0.9.15 — 160 runs across 8 SOTIF scenarios.
 >
-> **Sensor degradation:** Camera corruptions are synthetically applied.
-> LiDAR dropout is simulated via random point removal.
+> **Sensor degradation:** Camera corruptions synthetically applied.
+> LiDAR dropout simulated via random point removal.
 
 ---
 
@@ -265,7 +260,7 @@ will produce consistent results after `torch.manual_seed(42)` is applied.
 | Phase 5 | Open-loop robustness benchmark — 8 corruptions × 5 severities | ✅ Complete |
 | Phase 6 | Interface injection framework — FPC analysis across T1–T5 | ✅ Complete |
 | Stage 2 | CARLA closed-loop rig — ego + CAM_FRONT + LIDAR_TOP operational | ✅ Complete |
-| Stage 3 | HAZ-01 four-configuration campaign — 48 runs, FPC to safety outcome | ✅ Complete |
+| Stage 3 | 8-scenario campaign — 160 closed-loop runs · 4 configs each | ✅ Complete |
 | Stage 4 | V&V report, GSN safety case, trade-off ledger | ✅ Complete |
 | Phase 7 | Real BEVFusion inference + multi-scenario campaign | 📋 Planned |
 
@@ -315,11 +310,11 @@ LIDAR_TOP (64ch, 14,645 pts/frame) streaming in synchronous mode. 155 spawn poin
 
 | Safety Goal | ASIL | Status |
 |-------------|------|--------|
-| SG2: TTC scaling | C | ✅ VERIFIED — 10.4× TTC improvement in closed-loop |
-| SG1: Confidence threshold | B | ⚠️ PARTIAL — Loop 1 requires Loop 2 to be effective |
-| SG3: CONSERVATIVE regime | C | ⚠️ PARTIAL — CAUTIOUS triggered, CONSERVATIVE not reached |
-| SG4: Affordance override | D | ⚠️ PARTIAL — pedestrian avoided, no explicit affordance layer |
-| SG5: MRC trigger | B | ❌ NOT TESTED — requires extreme combined failure scenario |
+| SG1: Confidence threshold | B | ⚠️ PARTIAL — Loop 1 non-independent across 160 runs |
+| SG2: TTC scaling | C | ✅ VERIFIED — 10.4× TTC, collision 100%→0% (HAZ-01) |
+| SG3: CONSERVATIVE regime | C | ✅ VERIFIED — triggered in HAZ-03/05/06/07/08 |
+| SG4: Affordance override | D | ⚠️ PARTIAL — AEB + proximity override active |
+| SG5: MRC / EMERGENCY | B | ✅ VERIFIED — HAZ-08: EMERGENCY at extreme failure |
 
 **New requirements generated:**
 - NR-01: Rear-proximity monitor to inhibit speed reduction in dense following traffic
