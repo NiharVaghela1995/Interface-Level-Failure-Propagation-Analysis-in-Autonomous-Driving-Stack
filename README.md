@@ -1,5 +1,4 @@
 # Autonomous Driving Safety, Simulation & Validation Framework
-
 ![Python](https://img.shields.io/badge/python-3.10+-blue)
 ![Domain](https://img.shields.io/badge/domain-AV%20Safety%20%26%20V%26V-green)
 ![Status](https://img.shields.io/badge/status-V%26V%20framework-brightgreen)
@@ -10,24 +9,30 @@
 
 ## What this project is
 
-- A simulation-based safety validation program for autonomous driving systems, built on the standard automotive V-model — hazard analysis (HARA/SOTIF), scenario-based test design, closed-loop simulation in CARLA, KPI measurement, coverage analysis, and a GSN safety case.
-- On top of that foundation, the project instruments four interface points inside a modular AV perception-planning stack and measures how sensor failures at one boundary propagate downstream, how two mitigation loops reshape that propagation, and what safety outcomes and trade-offs each mitigation produces.
-- The V&V program is the primary contribution. The failure propagation analysis is the extension.
+A simulation-based safety validation program for autonomous driving systems, built on the standard automotive V-model — hazard analysis (HARA/SOTIF), scenario-based test design, closed-loop simulation in CARLA, KPI measurement, coverage analysis, and a GSN safety case.
+
+On top of that foundation, the project instruments four interface points inside a modular AV perception-planning stack and measures how sensor failures at one boundary propagate downstream, how two mitigation loops reshape that propagation, and what safety outcomes and trade-offs each mitigation produces.
+
+The V&V program is the primary contribution. The failure propagation analysis is the extension.
 
 ## V-model Architecture
 
 <p align="center">
-  <a href="https://NiharVaghela1995.github.io/av-perception-planning-research/av_research_phases_actual.html">
+  <a href="https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/Architecture.html" target="_blank">
     <img src="./docs/Architecture.png" width="100%">
   </a>
 </p>
+
+<p align="center"><em>Click image to open full interactive architecture — V-model stages, 160-run campaign, safety goal verdicts, key findings</em></p>
 
 ---
 
 ## Interactive Visualization
 
-**[Open Phase 3 Sensitivity Matrix — Interactive Explorer](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)**
+**[Open Stage 3 Results — 160-Run Campaign Dashboard](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/stage3_results.html)**
+TTC comparison across 8 scenarios · mitigation matrix · safety goal verdicts · FPC analysis
 
+**[Open Phase 3 Sensitivity Matrix — Interactive Explorer](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)**
 Explore how camera glare and LiDAR dropout propagate through sensor fusion trust
 into planning behavior — click any of the 49 degradation scenarios to inspect
 the full propagation chain.
@@ -326,7 +331,5 @@ Full V&V report: [`results/stage4/vnv_report.md`](results/stage4/vnv_report.md)
 GSN safety case: [`results/stage4/safety_case.md`](results/stage4/safety_case.md)
 
 Coverage tracker: [`docs/coverage_tracker.md`](docs/coverage_tracker.md)
-
-Interactive results viz: [stage3_results.html](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/stage3_results.html)
 
 Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_off_ledger.md)
