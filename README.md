@@ -7,7 +7,7 @@
 ![Evaluation](https://img.shields.io/badge/evaluation-closed--loop%20%2B%20open--loop-brightgreen)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NiharVaghela1995/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/blob/main/notebooks/phase1_gradcam_uncertainty_planning.ipynb)
 [![Interactive Demo](https://img.shields.io/badge/demo-interactive%20viz-blue)](https://niharvaghela1995.github.io/Interface-Level-Failure-Propagation-Analysis-in-Autonomous-Driving-Stack/phase3_interactive.html)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20718531.svg)](https://doi.org/10.5281/zenodo.20718531)
+[![DOI](https://img.shields.io/badge/DOI-10.13140%2FRG.2.2.21100.73606-blue)](https://doi.org/10.13140/RG.2.2.21100.73606)
 
 ## What this project is
 
