@@ -15,7 +15,21 @@ A simulation-based safety validation program for autonomous driving systems, bui
 
 On top of that foundation, the project instruments four interface points inside a modular AV perception-planning stack and measures how sensor failures at one boundary propagate downstream, how two mitigation loops reshape that propagation, and what safety outcomes and trade-offs each mitigation produces.
 
-The V&V program (Stages 2-4, the 160-run closed-loop campaign) is the primary, validated contribution. A parallel exploratory track investigated whether a *learned* perception-uncertainty signal (rather than known injected severity) could drive the same trust-and-planning logic — that track surfaced real, documented signal-quality problems and is presented honestly as open work, not as a result. See "Implementation Notes" below and `vnv_program.md` Section 9 for the full account.
+The V&V program (Stages 2-4, the 160-run closed-loop campaign) is the primary contribution; its results carry the limitations listed under Known issues. A parallel exploratory track investigated whether a *learned* perception-uncertainty signal (rather than known injected severity) could drive the same trust-and-planning logic — that track surfaced real, documented signal-quality problems and is presented honestly as open work, not as a result. See "Implementation Notes" below and `vnv_program.md` Section 9 for the full account.
+
+---
+
+## Known issues (self-audit, Sep 2026)
+
+A code-level audit found the following, none of which are fixed as of this commit:
+
+- **`reports/*.json` predates the current `scripts/utils/` refactor.** For Phases 1, 2, 3 and 5, the trust/planning formulas that produced the committed JSON numbers are not the formulas in the current code (verified by fitting closed-form equations to the JSON to machine precision, then re-running the current functions on the same inputs and getting different values). The README's phase-level numbers are not reproducible from `scripts/` as it stands.
+- **The MC Dropout signal comes from a single `p=0.1` dropout layer.** `enable_dropout()` (`utils/uncertainty.py`) activates 33 `nn.Dropout` modules in SegFormer-B2; 32 have `p=0.0` and are no-ops. All measured variance originates from `decode_head.dropout`, immediately before the final classifier convolution — closer to a feature-magnitude probe than an approximation to Bayesian model uncertainty.
+- **Phase 2's saliency pass corrupts the model's BatchNorm layer.** `phase2_bevfusion.py`'s `get_saliency` calls `model.train()` rather than `enable_dropout()`. SegFormer-B2 has exactly one `BatchNorm2d` (in `decode_head`); training mode normalises with batch-of-1 statistics and mutates its running statistics on every call, across four sequential camera measurements.
+- **Phase 4b's reported table was computed on a non-nuScenes proxy image**, not a driving scene. `phase4b_edl.py` falls back to a Wikimedia photo of a parked car when the expected nuScenes file path isn't found, and the run committed to the repo used that fallback (`phase4b_results.json: "dataset": "VW Beetle proxy"`).
+- **Loop 1's "zero standalone benefit" holds by construction, not by measurement.** `planning_utils.py`'s mode function returns `NORMAL` whenever Loop 2 is inactive, discarding Loop 1's trust output outright — so `loop1_only ≡ baseline` is guaranteed by the code path in deterministic CARLA, independent of what Loop 1 computes.
+- **`phase3_sensitivity.py` and `phase5_benchmark.py` do not currently run.** Phase 3 raises `KeyError: 'EMERGENCY'` on its own generated grid (its mode-map dictionary only covers three of the four planning modes). Phase 5's import of `trust_to_planning_mode` from the wrong module raises `ImportError` before the model loads.
+- **HAZ-08's `loop2_only` configuration collides at every tested severity** (it never leaves CAUTIOUS; only the `combined` configuration reaches CONSERVATIVE/EMERGENCY and prevents collision). HAZ-01 similarly collides in 1 of 12 `loop2_only` configurations and 4 of 12 `combined` configurations — see the corrected figures in the campaign table below.
 
 ---
 
@@ -28,6 +42,8 @@ The V&V program (Stages 2-4, the 160-run closed-loop campaign) is the primary, v
 </p>
 
 <p align="center"><em>Click image to open full interactive architecture — V-model stages, 160-run campaign, safety goal verdicts, key findings</em></p>
+
+> **Note:** the interactive pages linked in this README predate the Sep 2026 self-audit. Where they differ from this README (e.g. collision figures), this README is authoritative.
 
 ---
 
@@ -43,12 +59,12 @@ Explore how camera glare and LiDAR dropout propagate through sensor fusion trust
 
 ## V-model Structure
 
-This project follows the standard automotive V&V workflow — **Specify → Integrate → Execute → Evaluate** — and extends it with interface-level failure propagation analysis. Methodology validated against the Foretellix Safety-Driven V&V Guide (2024).
+This project follows the standard automotive V&V workflow — **Specify → Integrate → Execute → Evaluate** — and extends it with interface-level failure propagation analysis. This mirrors the structure described in the Foretellix Safety-Driven V&V Guide (2024).
 
 | Stage | Activity | Status |
 |-------|----------|--------|
 | **Specify** | ODD · HARA · SOTIF triggers · Safety goals · Scenarios (.xosc) | ✅ Complete |
-| **Integrate** | CARLA closed-loop rig · Sensors · 4 interface injection points | ✅ Complete |
+| **Integrate** | CARLA closed-loop rig · Sensors · 3 interface injection points (IP1–IP3; IP4 excluded as definitional) | ✅ Complete |
 | **Execute** | 8-scenario campaign · 4 configurations · 160 runs | ✅ Complete |
 | **Evaluate** | KPIs · GSN safety case · Trade-off ledger · Coverage | ✅ Complete |
 
@@ -66,21 +82,21 @@ This project follows the standard automotive V&V workflow — **Specify → Inte
 
 | Scenario | SOTIF | ASIL | Runs | Baseline TTC | Loop 2 TTC | Collision prevented |
 |----------|-------|------|------|-------------|-----------|---------------------|
-| HAZ-01: Pedestrian + glare | T1,T4 | D | 48 | 0.205s | 2.128s | ✅ 100%→0% |
+| HAZ-01: Pedestrian + glare | T1,T4 | D | 48 | 0.205s | 2.128s | ⚠️ 100%→8% |
 | HAZ-02: Cut-in + fog | T3 | C | 16 | 0.297s | 0.805s | — |
 | HAZ-03: Occluded pedestrian | T4 | D | 16 | 0.499s | 7.47s (combined) | — |
 | HAZ-04: Fog + pedestrian | T3,T4 | C/D | 16 | 0.388s | 0.702s | — |
 | HAZ-05: Rain + LiDAR dropout | T2,T3 | C | 16 | 0.367s | 9.591s | — |
 | HAZ-06: Night + low contrast | T1 | C | 16 | 0.367s | 9.591s | — |
 | HAZ-07: Construction zone | T3 | C | 16 | 0.319s | 8.545s | — |
-| HAZ-08: EMERGENCY / MRC | T5 | B | 16 | 0.224s | 8.51s | ✅ combined loops |
+| HAZ-08: EMERGENCY / MRC | T5 | B | 16 | 0.224s | 8.51s (combined) | ⚠️ combined loops; loop2-only collides at every severity |
 
 **Four mitigation configurations per scenario:** Baseline · Loop 1 only · Loop 2 only · Combined
 
 **Key numbers:**
-- Zero collisions with Loop 2 active across all 160 runs
+- Loop 2 eliminates collisions in most, but not all, tested configurations — see Known issues
 - HAZ-01 TTC: 0.205s → 2.128s (10.4× improvement)
-- Loop 1 alone: zero standalone safety benefit confirmed across every run — an architectural finding (Loop 1 and Loop 2 are a coupled mechanism, not independent layers), not a calibration gap
+- Loop 1 alone produces identical results to baseline in every run — a direct consequence of the mode logic in `planning_utils.py`, which returns NORMAL whenever Loop 2 is inactive regardless of Loop 1's trust computation
 - Combined loops required for CONSERVATIVE/EMERGENCY at extreme degradation (HAZ-08)
 - Failure Propagation Coefficient (Loop 2 only, safety-outcome basis) stays at or below 1.0 in every measured scenario — no amplification anywhere. Attenuation is graduated: complete (FPC=0.0) in rain/night/construction; mild (FPC 0.87–0.92) in fog/occlusion; near-full transmission (FPC=0.99) in the most extreme combined-failure scenario, where Combined config is required
 
@@ -89,7 +105,7 @@ This project follows the standard automotive V&V workflow — **Specify → Inte
 | Safety Goal | ASIL | Status |
 |-------------|------|--------|
 | SG1: Confidence threshold | B | ⚠️ PARTIAL — Loop 1 non-independent across 160 runs |
-| SG2: TTC scaling | C | ✅ VERIFIED — 10.4× TTC, collision 100%→0% (HAZ-01) |
+| SG2: TTC scaling | C | ⚠️ PARTIAL — 10.4× TTC (loop2-only); collision 100%→8% (1/12 configs) |
 | SG3: CONSERVATIVE regime | C | ✅ VERIFIED — triggered in HAZ-03/05/06/07/08 |
 | SG4: Affordance override | D | ⚠️ PARTIAL — AEB + proximity override (15m) active |
 | SG5: MRC / EMERGENCY trigger | B | ✅ VERIFIED — HAZ-08: EMERGENCY at extreme failure |
@@ -108,7 +124,7 @@ Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_of
 > **Two separate tracks in this repository — read this before citing any number below.**
 >
 > **Track 1 — the closed-loop campaign (Stages 2–4, 160 runs).** This is the
-> validated contribution. Trust and planning mode are computed as a
+> primary contribution (see Known issues for its limitations). Trust and planning mode are computed as a
 > deterministic function of *known* injected degradation severity. This
 > was a deliberate engineering choice: it isolates and validates the
 > systems/control question (does the stack correctly reweight trust and
@@ -169,7 +185,7 @@ Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_of
 
 **Key findings:**
 - Camera confidence score remains stable under glare (0.939 → 0.939) while attention pattern shifts — on this multi-camera sample, uncertainty also showed a small increase (+3.8%), the expected direction (contrast with Phase 1's single-sample result, which went the other way — see Phase 1 for the honest discussion of signal scatter)
-- CAM_FRONT_LEFT shows highest natural uncertainty (0.001667) — oblique viewing angle reduces model confidence
+- CAM_FRONT_LEFT shows highest natural uncertainty (0.001667). The cause has not been isolated from measurement-order effects — see Known issues
 - This scatter across samples (Phase 1 vs Phase 2) motivated the systematic 7×7 sweep in Phase 3 to characterise the signal's reliability properly, rather than relying on single-sample demonstrations
 
 ---
@@ -181,9 +197,9 @@ Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_of
 ![Phase 3 Mode Map](screenshots/phase3/phase3_03_mode_map.png)
 
 **Key findings:**
-- Camera trust drops 0.58 → 0.41 at maximum glare (zero dropout) — this trust value is computed from a deterministic sigmoid of glare severity, the same approach later used in the closed-loop Stage 2-4 campaign
+- Camera trust ranges 0.41–0.63 across the sweep; at zero LiDAR dropout it moves 0.4315→0.4139 across the glare axis. This value is a sigmoid of the measured MC-Dropout uncertainty ratio (`utils/trust.py`) — a different formula from the sigmoid-of-injected-severity used in the closed-loop campaign (`planning_utils.py`)
 - The underlying MC Dropout uncertainty values across the 7×7 grid show real scatter (range roughly 0.00026–0.00064) without a clean monotonic trend against glare alone — consistent with Phase 1's finding that the raw learned signal is noisy at this sample size
-- System enters CAUTIOUS mode from LiDAR dropout ≥ 10% in this sweep
+- Recomputing planning mode from this sweep's trust values with the current code yields CAUTIOUS in 48 of 49 cells regardless of dropout level — no clean threshold is observed
 - This scatter is the direct motivation for using known severity (not raw uncertainty) as the closed-loop campaign's input — see Implementation Notes above
 
 ---
@@ -199,7 +215,7 @@ Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_of
 | Requirement | Hazard | Scenario | Result | Status | Gap |
 |------------|---------|----------|-------------|--------|-----|
 | SG1 Confidence threshold | H1,H2 | T1 | Loop 1 trust formula implemented | ⚠️ Partial | Loop 1 non-independent (closed-loop finding) |
-| SG2 TTC scaling | H3 | T2,T4 | HAZ-01: 10.4× TTC, collision 100%→0% | ✅ Verified (closed-loop) | — |
+| SG2 TTC scaling | H3 | T2,T4 | HAZ-01: 10.4× TTC, collision 100%→8% | ⚠️ Partial (closed-loop) | 1/12 loop2-only configs still collide |
 | SG3 CONSERVATIVE regime | H4 | T3 | HAZ-03/05/06/07/08 triggered | ✅ Verified (closed-loop) | — |
 | SG4 Affordance override | H5 | T4 | AEB + proximity override (15m) active | ⚠️ Partial | Classification layer pending |
 | SG5 MRC trigger | H6 | T5 | HAZ-08: EMERGENCY at extreme failure | ✅ Verified (closed-loop) | — |
@@ -208,7 +224,7 @@ Trade-off ledger: [`results/stage4/trade_off_ledger.md`](results/stage4/trade_of
 **Key findings:**
 - 6 hazards identified (H1–H6): 2× ASIL D, 2× ASIL C, 2× ASIL B
 - 5 SOTIF trigger conditions (T1–T5): glare, rain dropout, combined degradation, pedestrian with degraded sensors, and extreme combined failure
-- Unknown unsafe scenario space reduced from 12 to 5 combinations (58.3% reduction) — this is a scenario-space classification result, independent of the perception-uncertainty signal questions discussed in Phase 1/4b
+- An earlier version reported the unknown-unsafe scenario space shrinking from 12 to 5 combinations (58.3%). Those values are hardcoded in `phase4a_sotif.py`, not derived from analysis, and are withdrawn — same provenance as the 29.3% figure below
 - Highest-criticality hazards: H2 and H5 (ASIL D)
 
 **A note on this section's quantitative figures:** the HARA table — hazard
@@ -315,7 +331,7 @@ nuScenes mini (Singapore urban) — cyclist scenarios not present in sampled sce
 | Phase 6 | Interface injection framework — open-loop FPC precursor | ✅ Complete (open-loop methodology) |
 | Stage 2 | CARLA closed-loop rig — ego + CAM_FRONT + LIDAR_TOP, 4 interface points | ✅ Complete |
 | Stage 3 | 8-scenario campaign — 160 closed-loop runs · 4 configs each | ✅ Complete |
-| Stage 4 | V&V report · GSN safety case · trade-off ledger · 3/5 SGs verified | ✅ Complete |
+| Stage 4 | V&V report · GSN safety case · trade-off ledger · 2/5 SGs verified, 3 partial | ✅ Complete |
 | Phase 7 | Real BEVFusion inference + multi-scenario campaign | 📋 Planned — not yet validated against real checkpoint |
 
 ---
@@ -323,7 +339,7 @@ nuScenes mini (Singapore urban) — cyclist scenarios not present in sampled sce
 ## Tech Stack
 
 PyTorch · SegFormer-B2 (camera backbone proxy) · nuScenes devkit ·
-GradCAM · Captum · Conformal Prediction (MAPIE) ·
+GradCAM ·
 Evidential Deep Learning (exploratory) · CARLA 0.9.15 · OpenSCENARIO 1.0 · esmini ·
 SOTIF (ISO 21448) · ISO 26262 · GSN safety case
 
